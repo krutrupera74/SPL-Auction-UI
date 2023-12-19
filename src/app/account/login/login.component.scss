@@ -1,0 +1,39 @@
+/* login.component.css */
+
+.background-image {
+    // background-image: url("./../../../assets/images/bg/login.jpg"); /* Replace with the actual path to your image */
+    // background-size: cover;
+    // background-position: center;
+    // background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 900px;
+    height: 100%;
+    max-height: 900px;
+    margin: 20px;
+    text-align: center;
+}
+
+/* Center-align the card title */
+mat-card-title,
+mat-card-subtitle {
+    display: block;
+    text-align: center;
+}
+
+mat-form-field,
+mat-checkbox {
+    display: block;
+}
+
+mat-card-header {
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}

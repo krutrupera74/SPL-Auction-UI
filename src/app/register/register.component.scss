@@ -1,0 +1,32 @@
+mat-form-field {
+    width: 50%;
+    display: block;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    width: 60%; /* Set the form width to 80% of the viewport width */
+    margin: 20px auto auto auto; /* Center the form horizontally */
+}
+
+.example-form {
+    width: 100%;
+}
+
+.example-full-width {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.example-margin {
+    width: 400px;
+    margin-left: 15px;
+}
+
+.example-value-label {
+    margin-left: 15px;
+}

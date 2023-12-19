@@ -1,0 +1,61 @@
+<div class="container">
+    <h1>
+        Register
+    </h1>
+
+    <form class="example-form">
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Name" [(ngModel)]="player.name" name="name" required>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <mat-select placeholder="Gender" [(ngModel)]="player.gender" name="gender" required>
+                <mat-option value="male">Male</mat-option>
+                <mat-option value="female">Female</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div class="example-full-width">
+            <label>Batting Rating : </label>
+            <mat-slider class="example-margin" [max]="10" [min]="0" [step]="1" [discrete]="false"
+                [showTickMarks]="true">
+                <input matSliderThumb [(ngModel)]="player.battingRating" #sliderBatting
+                    [ngModelOptions]="{standalone: true}">
+            </mat-slider>
+            <label class="example-value-label">{{sliderBatting.value}}</label>
+        </div>
+
+        <div class="example-full-width">
+            <label>Bowling Rating : </label>
+            <mat-slider class="example-margin" [max]="10" [min]="0" [step]="1" [discrete]="false"
+                [showTickMarks]="true">
+                <input matSliderThumb [(ngModel)]="player.bowlingRating" #sliderBowling
+                    [ngModelOptions]="{standalone: true}">
+            </mat-slider>
+            <label class="example-value-label">{{sliderBowling.value}}</label>
+        </div>
+
+        <div class="example-full-width">
+            <label>Bowling Rating : </label>
+            <mat-slider class="example-margin" [max]="10" [min]="0" [step]="1" [discrete]="false"
+                [showTickMarks]="true">
+                <input matSliderThumb [(ngModel)]="player.wicketKeepingRating" #sliderKeeping
+                    [ngModelOptions]="{standalone: true}">
+            </mat-slider>
+            <label class="example-value-label">{{sliderKeeping.value}}</label>
+        </div>
+
+        <mat-checkbox [(ngModel)]="player.interestedInCaptainRole" name="interestedInCaptainRole">Interested in Captain
+            Role</mat-checkbox>
+
+        <mat-checkbox class="ms-2" [(ngModel)]="player.interestedInOwnerRole" name="interestedInOwnerRole">Interested in Owner
+            Role</mat-checkbox>
+
+        <mat-form-field class="example-full-width">
+            <textarea matInput placeholder="Comments" [(ngModel)]="player.comments" name="comments"></textarea>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="submitForm()">Submit</button>
+    </form>
+
+</div>
