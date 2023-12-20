@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Constants } from 'src/app/shared/constants/constant';
 import { CommonService } from 'src/app/shared/services/common.service';
+import { LoginService } from '../shared/services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -10,20 +11,29 @@ import { CommonService } from 'src/app/shared/services/common.service';
 })
 export class LoginComponent {
 
-  email: string;
+  username: string;
   password: string;
 
   constructor(
     private commonService: CommonService,
-    private router: Router
+    private router: Router,
+    private loginService: LoginService
   ) { }
 
   onSubmit() {
-    const loginResponseModel = {
-      email: this.email,
-      password: this.password
+    const loginRequestModel = {
+      username: this.commonService.encrypt(this.username),
+      password: this.commonService.encrypt(this.password)
+      // username: this.username,
+      // password: this.password
     };
-    this.commonService.setGlobalVariables(Constants.currentUserObject, loginResponseModel);
-    this.router.navigate(['/dashboard']);
+
+    this.loginService.authenticateUser(loginRequestModel).subscribe(res => {
+      console.log(res);
+      this.commonService.setGlobalVariables(Constants.currentUserObject, res);
+      if (res.authenticated) {
+        this.router.navigate(['/dashboard']);
+      }
+    });
   }
 }
