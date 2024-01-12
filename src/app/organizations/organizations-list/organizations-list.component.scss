@@ -1,0 +1,11 @@
+.container-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+h2 {
+    margin: 0; /* Remove default margin to avoid extra spacing */
+}

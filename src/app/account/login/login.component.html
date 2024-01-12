@@ -4,22 +4,28 @@
     <div class="login-container">
         <mat-card class="login-card">
             <mat-card-header>
-                <mat-card-title>Login</mat-card-title>
+                <mat-card-title>
+                    <h1>
+                        Login
+                    </h1>
+                </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <form class="login-form" #loginForm="ngForm" (ngSubmit)="onSubmit()">
-                    <mat-form-field>
+                <form class="login-form" [formGroup]="loginForm">
+                    <mat-form-field appearance="outline">
                         <mat-label>Username</mat-label>
-                        <input matInput type="text" name="username" [(ngModel)]="username" required autocomplete="xyz123">
+                        <input matInput type="text" name="username" formControlName="username" required
+                            autocomplete="xyz123">
                     </mat-form-field>
 
                     <mat-form-field>
                         <mat-label>Password</mat-label>
-                        <input matInput type="password" name="password" [(ngModel)]="password" required autocomplete="new-password">
+                        <input matInput type="password" name="password" formControlName="password" required
+                            autocomplete="new-password">
                     </mat-form-field>
 
-                    <button mat-raised-button color="primary" type="submit"
-                        [disabled]="!loginForm.form.valid">Login</button>
+                    <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid"
+                        (click)="Login()">Login</button>
                 </form>
             </mat-card-content>
         </mat-card>

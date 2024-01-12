@@ -18,7 +18,7 @@ import { Constants } from "../shared/constants/constant";
       | Promise<boolean | UrlTree>
       | boolean
       | UrlTree {
-      if (this.commonService.getGlobalVariables(Constants.currentUserObject) == null) {
+      if (this.commonService.getGlobalVariables(Constants.currentUserObject) === null) {
         this.router.navigate(['/login']);
         return false;
       }

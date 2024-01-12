@@ -5,3 +5,8 @@ export class LoginResponseModel {
     username: string;
     role: string;
 }
+
+export class loginRequestModel {
+    username: string;
+    password: string;
+}

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -8,12 +8,23 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import {MatIconModule} from '@angular/material/icon';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTableModule } from '@angular/material/table';
+import { DefaultOptionDirective } from './directives/default-option.directive';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
+    declarations: [
+        DefaultOptionDirective,
+    ],
     imports: [
         FormsModule,
+        ReactiveFormsModule,
         MatCardModule,
         MatFormFieldModule,
         MatInputModule,
@@ -23,10 +34,18 @@ import {MatToolbarModule} from '@angular/material/toolbar';
         MatSliderModule,
         MatSlideToggleModule,
         MatIconModule,
-        MatToolbarModule
+        MatToolbarModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatSnackBarModule,
+        MatTableModule,
+        NgxMatSelectSearchModule,
+        MatDialogModule
     ],
     exports: [
         FormsModule,
+        DefaultOptionDirective,
+        ReactiveFormsModule,
         MatCardModule,
         MatFormFieldModule,
         MatInputModule,
@@ -36,7 +55,13 @@ import {MatToolbarModule} from '@angular/material/toolbar';
         MatSliderModule,
         MatSlideToggleModule,
         MatIconModule,
-        MatToolbarModule
+        MatToolbarModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatSnackBarModule,
+        MatTableModule,
+        NgxMatSelectSearchModule,
+        MatDialogModule
     ]
 })
 export class SharedModule { }

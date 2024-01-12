@@ -1,0 +1,22 @@
+<div class="custom-dialog-header">
+    <span class="custom-dialog-title">{{pageHeader}}</span>
+    <button mat-icon-button (click)="closeDialog()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<div class="container mt-4">
+    <form [formGroup]="organizationForm" class="example-form">
+        <mat-form-field class="example-full-width">
+            <mat-label>Organization Name</mat-label>
+            <input matInput formControlName="organizationName" placeholder="Enter organization name" />
+            <mat-error *ngIf="organizationForm.get('organizationName').hasError('required')">
+                Organization Name is required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-slide-toggle formControlName="isActive" color="accent" class="example-full-width">Is
+            Active</mat-slide-toggle>
+
+        <button mat-raised-button color="primary" type="submit" (click)="addOrganization()">Submit</button>
+    </form>
+</div>

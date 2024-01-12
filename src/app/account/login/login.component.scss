@@ -12,7 +12,7 @@
 }
 
 .login-card {
-    width: 100%;
+    width: 500px;
     max-width: 900px;
     height: 100%;
     max-height: 900px;
@@ -24,7 +24,6 @@
 mat-card-title,
 mat-card-subtitle {
     display: block;
-    text-align: center;
 }
 
 mat-form-field,
@@ -34,6 +33,20 @@ mat-checkbox {
 
 mat-card-header {
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: flex-start;
     margin-bottom: 10px;
+}
+
+.custom-mat-select .mat-select-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.custom-mat-select .search-input {
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom: 1px solid #ccc;
 }

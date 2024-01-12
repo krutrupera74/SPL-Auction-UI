@@ -1,4 +1,73 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@use "@angular/material" as mat;
+
+@include mat.core();
+
+$my-app-primary: mat.define-palette(mat.$blue-palette, 500);
+$my-app-accent: mat.define-palette(mat.$deep-orange-palette, A200, A100, A400);
+$my-app-warn: mat.define-palette(mat.$red-palette);
+
+$my-app-theme: mat.define-light-theme(
+    (
+        color: (
+            primary: $my-app-primary,
+            accent: $my-app-accent,
+            warn: $my-app-warn
+        )
+    )
+);
+
+@include mat.all-component-themes($my-app-theme);
+
+// @include angular-material-theme($my-app-theme);
+
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-mdc-snack-bar-container {
+    &.success-snackbar {
+        --mdc-snackbar-container-color: #4caf50;
+        --mat-snack-bar-button-color: #fff !important;
+    }
+}
+
+.mat-mdc-snack-bar-container {
+    &.info-snackbar {
+        --mdc-snackbar-container-color: #2196f3; /* blue */
+        --mat-snack-bar-button-color: #fff;
+    }
+}
+
+.mat-mdc-snack-bar-container {
+    &.warning-snackbar {
+        --mdc-snackbar-container-color: #ff9800; /* orange */
+        --mat-snack-bar-button-color: #fff;
+    }
+}
+
+.mat-mdc-snack-bar-container {
+    &.error-snackbar {
+        --mdc-snackbar-container-color: #f44336; /* red */
+        --mat-snack-bar-button-color: #fff;
+    }
+}
+
+mat-card {
+    border-radius: 10px !important;
+}
+
+th {
+    font-weight: bold !important;
+}
+
+.mdc-data-table__header-cell,
+.mdc-data-table__cell {
+    text-align: center !important;
+}

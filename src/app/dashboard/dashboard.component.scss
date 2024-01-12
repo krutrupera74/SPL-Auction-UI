@@ -6,3 +6,76 @@
 mat-card-content {
     margin-top: 10px;
 }
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.dashboard-card {
+    width: 300px;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.dashboard-card {
+    width: 400px;
+    cursor: pointer; /* Set cursor to pointer */
+    transition: background-color 0.3s; /* Add a smooth transition effect */
+}
+
+.dashboard-card:hover {
+    background-color: #f4f4f4 ;
+}
+
+.dashboard-card-icon {
+    color: white;
+    border-radius: 50%;
+    padding: 8px;
+    margin-right: 8px;
+}
+
+.mat-card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.mat-card-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1; /* Allow title to grow and center vertically */
+    margin-top: 8px;
+    font-size: 22px; /* Adjust font size as needed */
+}
+
+.mat-card-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column; /* Adjusted to column */
+    height: 100px; /* Adjust the height as needed */
+}
+
+mat-card-content {
+    text-align: center;
+}
+
+h2 {
+    font-size: 32px; /* Adjust font size as needed */
+    margin: 0;
+}

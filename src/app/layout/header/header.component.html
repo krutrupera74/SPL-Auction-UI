@@ -4,4 +4,8 @@
     </button>
     <span>SPL Auction</span>
     <span class="example-spacer"></span>
+    <span *ngIf="LoggedInUser">Hello {{LoggedInUser}}</span>
+    <button mat-icon-button class="example-icon" (click)="logout()">
+        <mat-icon fontIcon="power_settings_new"></mat-icon>
+    </button>
 </mat-toolbar>

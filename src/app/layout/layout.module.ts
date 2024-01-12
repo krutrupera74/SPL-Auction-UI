@@ -8,7 +8,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { LayoutRoutingModule } from './layout.routing.module';
 import { LayoutComponent } from './layout.component';
 
-
 @NgModule({
     declarations: [
         HeaderComponent,
@@ -20,6 +19,7 @@ import { LayoutComponent } from './layout.component';
         SharedModule,
         HttpClientModule
     ],
-    providers: [],
+    providers: [
+    ],
 })
 export class LayoutModule { }

@@ -1,0 +1,41 @@
+<div class="custom-dialog-header">
+    <span class="custom-dialog-title">{{pageHeader}}</span>
+    <button mat-icon-button (click)="closeDialog()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<div class="container mt-4">
+    <form [formGroup]="userForm" class="example-form">
+        <mat-form-field class="example-full-width">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username" placeholder="Enter username" />
+            <mat-error *ngIf="userForm.get('username').hasError('required')">
+                Username is required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" *ngIf="this.data?.mode === 'add'">
+            <mat-label>Password</mat-label>
+            <input matInput formControlName="password" type="password" placeholder="Enter password" />
+            <mat-error *ngIf="userForm.get('password').hasError('required')">
+                Password is required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <mat-select formControlName="organizationId" placeholder="Organization*">
+                <mat-option *ngFor="let organization of organizationList" [value]="organization.id">
+                    {{ organization.organizationName }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="userForm.get('organizationId').hasError('required')">
+                Organization is required.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-slide-toggle formControlName="isActive" color="accent" class="example-full-width">Is
+            Active</mat-slide-toggle>
+
+        <button mat-raised-button color="primary" type="submit" (click)="addUser()">Submit</button>
+    </form>
+</div>
