@@ -9,7 +9,7 @@ mat-form-field {
     align-items: start;
     justify-content: center;
     width: 60%; /* Set the form width to 80% of the viewport width */
-    margin: 20px auto auto auto; /* Center the form horizontally */
+    margin: 50px auto auto auto; /* Center the form horizontally */
 }
 
 .example-form {
@@ -29,4 +29,17 @@ mat-form-field {
 
 .example-value-label {
     margin-left: 15px;
+}
+
+.center {
+    position: relative;
+    width: 100%; /* Adjust as needed */
+    height: 100vh; /* Adjust as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    font-size: 4em; /* Adjust font size as needed */
 }

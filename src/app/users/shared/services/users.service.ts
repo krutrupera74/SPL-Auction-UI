@@ -4,6 +4,7 @@ import { environment } from "src/environment";
 import { Observable, map } from "rxjs";
 import { ResponseModel } from "src/app/shared/models/response.model";
 import { UserAddModel, UserUpdateModel } from "../models/users.model";
+import { HttpClientHeader } from "src/app/shared/services/http-header.service";
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +14,7 @@ export class UsersService {
 
     private ApiEndPoint: string;
 
-    constructor(private httpClient: HttpClient) {
+    constructor(private httpClient: HttpClientHeader) {
         this.ApiEndPoint = environment.APIEndpoint;
     }
 

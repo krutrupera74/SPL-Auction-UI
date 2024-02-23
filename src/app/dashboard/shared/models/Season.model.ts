@@ -3,4 +3,6 @@ export class DashboardResponseModel {
     organizationsCount: number;
     tournamentsCount: number;
     playersCount: number;
+    sportsCount: number;
+    teamsCount: number;
 }

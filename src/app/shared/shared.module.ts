@@ -17,12 +17,17 @@ import { MatTableModule } from '@angular/material/table';
 import { DefaultOptionDirective } from './directives/default-option.directive';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatDialogModule } from '@angular/material/dialog';
+import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
+import { RouterModule } from '@angular/router';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
     declarations: [
         DefaultOptionDirective,
+        UnauthorizedComponent,
     ],
     imports: [
+        RouterModule,
         FormsModule,
         ReactiveFormsModule,
         MatCardModule,
@@ -40,7 +45,8 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatSnackBarModule,
         MatTableModule,
         NgxMatSelectSearchModule,
-        MatDialogModule
+        MatDialogModule,
+        MatRadioModule
     ],
     exports: [
         FormsModule,
@@ -61,7 +67,8 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatSnackBarModule,
         MatTableModule,
         NgxMatSelectSearchModule,
-        MatDialogModule
+        MatDialogModule,
+        MatRadioModule
     ]
 })
 export class SharedModule { }

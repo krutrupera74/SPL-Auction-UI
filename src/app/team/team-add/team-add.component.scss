@@ -1,0 +1,57 @@
+mat-form-field {
+    width: 100%;
+    display: block;
+}
+
+.custom-dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: #f0f0f0; /* Change the background color as per your design */
+}
+
+.custom-dialog-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    width: 60%; /* Set the form width to 80% of the viewport width */
+    margin: 20px auto auto auto; /* Center the form horizontally */
+}
+
+.example-form {
+    width: 100%;
+}
+
+.example-full-width {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Example CSS styles for the file input and associated text */
+.file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    background-color: #007bff; /* Example background color */
+    color: #fff; /* Example text color */
+    border-radius: 4px; /* Example border radius */
+    padding: 8px 12px; /* Example padding */
+    cursor: pointer;
+}
+
+.file-input-wrapper input[type="file"] {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+}

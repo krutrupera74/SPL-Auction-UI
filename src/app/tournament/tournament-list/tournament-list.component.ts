@@ -1,0 +1,65 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { TournamentsList } from '../shared/models/tournament.model';
+import { TournamentAddComponent } from '../tournament-add/tournament-add.component';
+import { MatDialog } from '@angular/material/dialog';
+import { TournamentsService } from '../shared/services/tournament.service';
+
+@Component({
+  selector: 'app-tournament-list',
+  templateUrl: './tournament-list.component.html',
+  styleUrls: ['./tournament-list.component.scss']
+})
+export class TournamentListComponent implements OnInit {
+
+  tournaments: TournamentsList[];
+  addTournamentDialog = false;
+  displayedColumns: string[] = ['Name', 'StartDate', 'EndDate', 'Description', 'Sport', 'IsActive', 'Action'];
+  @ViewChild(TournamentAddComponent) tournamentAddComponent: TournamentAddComponent;
+
+  constructor(
+    private dialog: MatDialog,
+    private tournamentService: TournamentsService
+  ) {
+
+  }
+  ngOnInit() {
+    this.getAllTournaments();
+  }
+
+  getAllTournaments() {
+    this.tournamentService.getAllTournaments().subscribe(res => {
+      if (res && res.success) {
+        this.tournaments = res.data;
+      }
+    });
+  }
+
+  editTournament(data) {
+    this.tournamentService.getTournamentById(data.id).subscribe(res => {
+      const dialogRef = this.dialog.open(TournamentAddComponent, {
+        data: { mode: 'edit', item: res.data },
+        width: '900px', // Set the width as per your requirement
+        height: '700px', // Set the height as per your requirement
+        panelClass: 'custom-dialog-container', // Custom CSS class for styling
+        autoFocus: false,
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        this.getAllTournaments();
+        // Handle any action after dialog closes
+      });
+    });
+  }
+
+  addTournament() {
+    // Open Add Component in a dialog without passing any data
+    const dialogRef = this.dialog.open(TournamentAddComponent, {
+      data: { mode: 'add' },
+      width: '900px', // Set the width as per your requirement
+      height: '700px', // Set the height as per your requirement
+      panelClass: 'custom-dialog-container', // Custom CSS class for styling
+      autoFocus: false,
+    });
+  }
+
+}

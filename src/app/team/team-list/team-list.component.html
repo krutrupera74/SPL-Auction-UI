@@ -1,0 +1,46 @@
+<div class="container mt-4">
+
+    <div class="container-header">
+        <h2>Teams</h2>
+        <button mat-raised-button color="primary" (click)="addTeam()">Add Team</button>
+    </div>
+
+    <table mat-table [dataSource]="teams" class="mat-elevation-z8">
+        <ng-container matColumnDef="Logo">
+            <th mat-header-cell *matHeaderCellDef> Logo </th>
+            <td mat-cell *matCellDef="let element"> {{element.logoUrl}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Tournament">
+            <th mat-header-cell *matHeaderCellDef> Tournament </th>
+            <td mat-cell *matCellDef="let element"> {{element.tournament}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="IsActive">
+            <th mat-header-cell *matHeaderCellDef> Is Active </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-icon *ngIf="element.isActive; else inactiveIcon" style="color: green;">check</mat-icon>
+                <ng-template #inactiveIcon>
+                    <mat-icon style="color: red;">clear</mat-icon>
+                </ng-template>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Action">
+            <th mat-header-cell *matHeaderCellDef> Action </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button color="accent" (click)="editTeam(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>

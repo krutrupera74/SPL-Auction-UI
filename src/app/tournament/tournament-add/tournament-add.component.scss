@@ -1,0 +1,36 @@
+mat-form-field {
+    width: 100%;
+    display: block;
+}
+
+.custom-dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: #f0f0f0; /* Change the background color as per your design */
+}
+
+.custom-dialog-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    width: 60%; /* Set the form width to 80% of the viewport width */
+    margin: 20px auto auto auto; /* Center the form horizontally */
+}
+
+.example-form {
+    width: 100%;
+}
+
+.example-full-width {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

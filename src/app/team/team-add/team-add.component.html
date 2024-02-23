@@ -1,0 +1,43 @@
+<div class="custom-dialog-header">
+    <span class="custom-dialog-title">{{pageHeader}}</span>
+    <button mat-icon-button (click)="closeDialog()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<div class="container mt-4">
+    <form [formGroup]="teamForm" class="example-form">
+        <mat-form-field class="example-full-width">
+            <mat-label>Team Name</mat-label>
+            <input matInput formControlName="name" placeholder="Enter Team Name" />
+            <mat-error *ngIf="teamForm.get('name').hasError('required')">
+                Team Name is required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <mat-select formControlName="tournamentId" placeholder="Tournament*">
+                <mat-option *ngFor="let tournament of tournamentsList" [value]="tournament.id">
+                    {{ tournament.name }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="teamForm.get('tournamentId').hasError('required')">
+                Sport is required.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-slide-toggle formControlName="isActive" color="accent" class="example-full-width mb-4">Is
+            Active</mat-slide-toggle>
+
+        <div class="mb-4">
+            <div class="file-input-wrapper">
+                <span>Choose File</span>
+                <input type="file" id="fileInput" (change)="onFileSelected($event)">
+              </div>
+              <div *ngIf="selectedImage">
+                <img [src]="selectedImage" alt="Selected Image">
+              </div>
+        </div>
+
+        <button mat-raised-button color="primary" type="submit" (click)="addTeam()">Submit</button>
+    </form>
+</div>

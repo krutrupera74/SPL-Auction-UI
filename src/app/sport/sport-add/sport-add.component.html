@@ -1,0 +1,22 @@
+<div class="custom-dialog-header">
+    <span class="custom-dialog-title">{{pageHeader}}</span>
+    <button mat-icon-button (click)="closeDialog()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<div class="container mt-4">
+    <form [formGroup]="sportForm" class="example-form">
+        <mat-form-field class="example-full-width">
+            <mat-label>Sport Name</mat-label>
+            <input matInput formControlName="name" placeholder="Enter Sport Name" />
+            <mat-error *ngIf="sportForm.get('name').hasError('required')">
+                Sport Name is required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-slide-toggle formControlName="isActive" color="accent" class="example-full-width mb-4">Is
+            Active</mat-slide-toggle>
+
+        <button mat-raised-button color="primary" type="submit" (click)="addSport()">Submit</button>
+    </form>
+</div>
