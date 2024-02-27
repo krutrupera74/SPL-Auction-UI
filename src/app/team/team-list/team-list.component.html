@@ -8,7 +8,9 @@
     <table mat-table [dataSource]="teams" class="mat-elevation-z8">
         <ng-container matColumnDef="Logo">
             <th mat-header-cell *matHeaderCellDef> Logo </th>
-            <td mat-cell *matCellDef="let element"> {{element.logoUrl}} </td>
+            <td mat-cell *matCellDef="let element">
+                <img [src]="element.imagePath" alt="Logo" style="max-width: 50px; max-height: 50px;">
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="Name">

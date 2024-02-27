@@ -44,4 +44,21 @@ export class TeamListComponent implements OnInit {
       autoFocus: false,
     });
   }
+
+  editTeam(data) {
+    this.teamsService.getTeamById(data.id).subscribe(res => {
+      const dialogRef = this.dialog.open(TeamAddComponent, {
+        data: { mode: 'edit', item: res.data },
+        width: '900px', // Set the width as per your requirement
+        height: '700px', // Set the height as per your requirement
+        panelClass: 'custom-dialog-container', // Custom CSS class for styling
+        autoFocus: false,
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        this.getAllTeams();
+        // Handle any action after dialog closes
+      });
+    });
+  }
 }

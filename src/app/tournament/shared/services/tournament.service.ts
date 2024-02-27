@@ -30,7 +30,7 @@ export class TournamentsService {
     }
 
     getTournamentById(id: string): Observable<ResponseModel> {
-        return this.httpClient.get(this.ApiEndPoint + 'Tournaments/GeTournamentById?id=' + id).pipe(map((response => response as ResponseModel)));
+        return this.httpClient.get(this.ApiEndPoint + 'Tournaments/GetTournamentById?id=' + id).pipe(map((response => response as ResponseModel)));
     }
 
     updateTournament(request: TournamentUpdateModel): Observable<ResponseModel> {

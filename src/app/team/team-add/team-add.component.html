@@ -28,7 +28,7 @@
         <mat-slide-toggle formControlName="isActive" color="accent" class="example-full-width mb-4">Is
             Active</mat-slide-toggle>
 
-        <div class="mb-4">
+        <!-- <div class="mb-4">
             <div class="file-input-wrapper">
                 <span>Choose File</span>
                 <input type="file" id="fileInput" (change)="onFileSelected($event)">
@@ -36,6 +36,24 @@
               <div *ngIf="selectedImage">
                 <img [src]="selectedImage" alt="Selected Image">
               </div>
+        </div> -->
+
+        <div>
+            <input type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none" #fileInput>
+            <button mat-raised-button color="primary" (click)="fileInput.click()">
+                <mat-icon>cloud_upload</mat-icon>Upload Image
+            </button>
+            <button mat-raised-button color="warn" (click)="removeImage()" class="ms-2">Remove Image</button>
+            <br><br>
+            <div *ngIf="!selectedFile && errorMessage">
+                <mat-error>{{errorMessage}}</mat-error>
+              </div>
+            <div *ngIf="selectedFile && !isEdit" class="mb-4">
+                <img [src]="selectedFileUrl" alt="Uploaded Image" style="max-width: 400px; max-height: 400px;">
+            </div>
+            <div *ngIf="isEdit && selectedFileUrl" class="mb-4">
+                <img [src]="selectedFileUrl" alt="Uploaded Image" style="max-width: 400px; max-height: 400px;">
+            </div>
         </div>
 
         <button mat-raised-button color="primary" type="submit" (click)="addTeam()">Submit</button>

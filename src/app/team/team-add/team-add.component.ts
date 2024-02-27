@@ -1,9 +1,11 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TournamentsList } from 'src/app/tournament/shared/models/tournament.model';
 import { TeamsService } from '../shared/services/team.service';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-team-add',
@@ -12,16 +14,20 @@ import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 })
 export class TeamAddComponent implements OnInit {
   pageHeader = 'Add Team';
+  isEdit = false;
   teamForm: FormGroup;
   tournamentsList: TournamentsList[];
   selectedTeamId: any;
-  selectedImage: string | ArrayBuffer | null = null;
+  selectedFile: File | null = null;
+  selectedFileUrl: string | ArrayBuffer | null = null;
   errorMessage: string | null = null;
+  @ViewChild('fileInput') fileInput: any;
 
   constructor(
     private fb: FormBuilder,
     private teamsService: TeamsService,
     private snackBarService: SnackbarService,
+    private http: HttpClient,
     public dialogRef: MatDialogRef<TeamAddComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -34,9 +40,13 @@ export class TeamAddComponent implements OnInit {
       isActive: [false],
     });
     if (this.data?.mode === 'edit') {
+      this.isEdit = true;
       this.pageHeader = 'Edit Team';
       this.selectedTeamId = this.data?.item.id;
       this.teamForm.patchValue(this.data?.item);
+      this.selectedFileUrl = this.data?.item.imagePath;
+    } else {
+      this.isEdit = false;
     }
     this.getActiveTournaments();
   }
@@ -54,89 +64,62 @@ export class TeamAddComponent implements OnInit {
   }
 
   onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      this.selectedImage = e.target?.result;
-      // Call resizeImage after the image has been loaded
-      this.resizeImage(file);
-    };
-
-    if (file) {
-      const fileSizeInMB = file.size / (1024 * 1024); // Convert bytes to MB
-      if (fileSizeInMB > 2) {
-        this.errorMessage = 'File size exceeds 2MB limit.';
-        return;
-      }
-
-      reader.readAsDataURL(file);
-      this.teamForm.patchValue({ image: file }); // Update form control with the selected image file
-    }
+    this.selectedFile = event.target.files[0];
+    this.selectedFileUrl = this.selectedFile ? URL.createObjectURL(this.selectedFile) : null;
   }
 
-  resizeImage(file: File) {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d')!;
-        const maxSize = 600;
+  removeImage() {
+    this.selectedFile = null;
+    this.selectedFileUrl = null;
+    this.errorMessage = null; // Reset error message
 
-        let width = img.width;
-        let height = img.height;
-
-        // Calculate aspect ratio
-        let aspectRatio = 1;
-        if (width > height) {
-          aspectRatio = maxSize / width;
-          height = height * aspectRatio;
-          width = maxSize;
-        } else {
-          aspectRatio = maxSize / height;
-          width = width * aspectRatio;
-          height = maxSize;
-        }
-
-        // Set canvas dimensions
-        canvas.width = maxSize;
-        canvas.height = maxSize;
-
-        // Clear canvas
-        ctx.clearRect(0, 0, maxSize, maxSize);
-
-        // Draw image on canvas
-        ctx.drawImage(img, 0, 0, width, height);
-
-        // Convert canvas content to base64 data URL
-        const resizedImage = canvas.toDataURL('image/jpeg');
-
-        // Update selectedImage for preview
-        this.selectedImage = resizedImage;
-      };
-
-      img.src = event.target!.result as string;
-    };
-    reader.readAsDataURL(file);
+    this.fileInput.nativeElement.value = '';
+    const event = new Event('change', { bubbles: true });
+    this.fileInput.nativeElement.dispatchEvent(event);
   }
-
 
   addTeam() {
-    if (this.teamForm.valid && this.selectedImage) {
-      const formData = new FormData();
-      formData.append('image', this.b64toBlob(this.selectedImage));
-      formData.append('name', this.teamForm.controls['name'].value);
-      formData.append('tournamentId', this.teamForm.controls['tournamentId'].value);
-      formData.append('isActive', this.teamForm.controls['isActive'].value);
+    if (!this.isEdit) {
+      if (!this.selectedFile) {
+        this.errorMessage = "Please select an Image.";
+      }
+      if (this.teamForm.valid && this.selectedFile) {
+        const formData = new FormData();
+        formData.append('image', this.selectedFile);
+        formData.append('name', this.teamForm.controls['name'].value);
+        formData.append('tournamentId', this.teamForm.controls['tournamentId'].value);
+        formData.append('isActive', this.teamForm.controls['isActive'].value);
 
-      this.teamsService.addTeam(formData).subscribe(res => {
-        if (res && res.success) {
-          this.snackBarService.success(res.message);
-        } else {
-          this.snackBarService.error(res.message);
-        }
-      });
+        this.teamsService.addTeam(formData).subscribe(res => {
+          if (res && res.success) {
+            this.snackBarService.success(res.message);
+            this.dialogRef.close();
+          } else {
+            this.snackBarService.error(res.message);
+          }
+        });
+      }
+    } else {
+      if (!this.selectedFileUrl) {
+        this.errorMessage = "Please select an Image.";
+      }
+      if (this.teamForm.valid && this.selectedFileUrl) {
+        const formData = new FormData();
+        formData.append('image', this.selectedFile ? this.selectedFile : '');
+        formData.append('imageUrl', this.selectedFileUrl?.toString());
+        formData.append('name', this.teamForm.controls['name'].value);
+        formData.append('tournamentId', this.teamForm.controls['tournamentId'].value);
+        formData.append('isActive', this.teamForm.controls['isActive'].value);
+
+        this.teamsService.editTeam(formData).subscribe(res => {
+          if (res && res.success) {
+            this.snackBarService.success(res.message);
+            this.dialogRef.close();
+          } else {
+            this.snackBarService.error(res.message);
+          }
+        });
+      }
     }
   }
 

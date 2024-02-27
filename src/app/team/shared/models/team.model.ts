@@ -1,7 +1,7 @@
 export class TeamAddModel {
     name: string;
     isActive: boolean;
-    logoUrl: string;
+    imagePath: string;
     tournamentId: string;
 }
 
@@ -9,7 +9,7 @@ export class TeamUpdateModel {
     id: string;
     name: string;
     isActive: boolean;
-    logoUrl: string;
+    imagePath: string;
     tournamentId: string;
 }
 
@@ -17,6 +17,6 @@ export class TeamsList {
     id: string;
     name: string;
     isActive: boolean;
-    logoUrl: string;
+    imagePath: string;
     tournamentId: string;
 }

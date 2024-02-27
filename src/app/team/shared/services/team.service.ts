@@ -28,4 +28,14 @@ export class TeamsService {
         return this.httpClient.post(this.ApiEndPoint + 'Teams/AddTeam', formData)
             .pipe(map((response => response as ResponseModel)));
     }
+
+    editTeam(formData: any) {
+        return this.httpClient.post(this.ApiEndPoint + 'Teams/EditTeam', formData)
+            .pipe(map((response => response as ResponseModel)));
+    }
+
+    getTeamById(id: string): Observable<ResponseModel> {
+        return this.httpClient.get(this.ApiEndPoint + 'Teams/GetTeamById?id=' + id)
+            .pipe(map((response => response as ResponseModel)));
+    }
 }
