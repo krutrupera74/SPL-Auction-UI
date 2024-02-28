@@ -3,6 +3,7 @@ import { TournamentsList } from '../shared/models/tournament.model';
 import { TournamentAddComponent } from '../tournament-add/tournament-add.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TournamentsService } from '../shared/services/tournament.service';
+import { ConfirmationDialog } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-tournament-list',
@@ -13,7 +14,7 @@ export class TournamentListComponent implements OnInit {
 
   tournaments: TournamentsList[];
   addTournamentDialog = false;
-  displayedColumns: string[] = ['Name', 'StartDate', 'EndDate', 'Description', 'Sport', 'IsActive', 'Action'];
+  displayedColumns: string[] = ['Name', 'StartDate', 'EndDate', 'Description', 'Sport', 'Action'];
   @ViewChild(TournamentAddComponent) tournamentAddComponent: TournamentAddComponent;
 
   constructor(
@@ -60,6 +61,30 @@ export class TournamentListComponent implements OnInit {
       panelClass: 'custom-dialog-container', // Custom CSS class for styling
       autoFocus: false,
     });
+    dialogRef.afterClosed().subscribe((result) => {
+      this.getAllTournaments();
+      // Handle any action after dialog closes
+    });
   }
+
+  deleteTournament(data) {
+    this.tournamentService.deleteTournament(data.id).subscribe(res => {      
+        this.getAllTournaments();      
+    });
+  }
+
+  openDialog(data) {    
+    const dialogRef = this.dialog.open(ConfirmationDialog,{
+    data:{
+        message: 'Do you want to delete this tournament?'
+    }
+    });
+     
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+        if (confirmed) {
+          this.deleteTournament(data);   
+        }
+    });
+}
 
 }

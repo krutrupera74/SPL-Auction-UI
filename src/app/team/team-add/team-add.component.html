@@ -43,7 +43,12 @@
             <button mat-raised-button color="primary" (click)="fileInput.click()">
                 <mat-icon>cloud_upload</mat-icon>Upload Image
             </button>
-            <button mat-raised-button color="warn" (click)="removeImage()" class="ms-2">Remove Image</button>
+            <button mat-raised-button color="warn" (click)="removeImage()" class="ms-2">
+                <mat-icon>delete</mat-icon>Remove Image
+            </button>
+            <button mat-raised-button color="primary" type="submit" (click)="addTeam()" class="ms-2">
+                <mat-icon>add_box</mat-icon>Add Team
+            </button>
             <br><br>
             <div *ngIf="!selectedFile && errorMessage">
                 <mat-error>{{errorMessage}}</mat-error>
@@ -53,9 +58,7 @@
             </div>
             <div *ngIf="isEdit && selectedFileUrl" class="mb-4">
                 <img [src]="selectedFileUrl" alt="Uploaded Image" style="max-width: 400px; max-height: 400px;">
-            </div>
-        </div>
-
-        <button mat-raised-button color="primary" type="submit" (click)="addTeam()">Submit</button>
+            </div>            
+        </div>        
     </form>
 </div>

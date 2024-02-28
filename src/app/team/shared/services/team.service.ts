@@ -38,4 +38,8 @@ export class TeamsService {
         return this.httpClient.get(this.ApiEndPoint + 'Teams/GetTeamById?id=' + id)
             .pipe(map((response => response as ResponseModel)));
     }
+
+    deleteTeam(id: string): Observable<ResponseModel> {
+        return this.httpClient.delete(this.ApiEndPoint + 'Teams/DeleteTeam?id=' + id).pipe(map((response => response as ResponseModel)));
+    }
 }

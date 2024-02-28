@@ -3,6 +3,7 @@ import { SportAddComponent } from '../sport-add/sport-add.component';
 import { MatDialog } from '@angular/material/dialog';
 import { SportsList } from '../shared/models/sport.model';
 import { SportsService } from '../shared/services/sports.service';
+import { ConfirmationDialog } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-sport-list',
@@ -12,7 +13,7 @@ import { SportsService } from '../shared/services/sports.service';
 export class SportListComponent implements OnInit {
   sports: SportsList[];
   addSportDialog = false;
-  displayedColumns: string[] = ['Name', 'Organization', 'IsActive', 'Action'];
+  displayedColumns: string[] = ['Name', 'Organization','Action'];
   @ViewChild(SportAddComponent) sportAddComponent: SportAddComponent;
 
   constructor(
@@ -67,6 +68,26 @@ export class SportListComponent implements OnInit {
       this.getAllSports();
       // Handle any action after dialog closes
     });
+  }  
+
+  deleteSports(data){
+    this.sportsService.deleteSport(data.id).subscribe(res => {      
+      this.getAllSports();      
+  });
   }
+
+  openDialog(data) {    
+    const dialogRef = this.dialog.open(ConfirmationDialog,{
+    data:{
+        message: 'Do you want to delete this sport?'
+    }
+    });
+     
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+        if (confirmed) {
+          this.deleteSports(data);      
+        }
+    });
+} 
 
 }
