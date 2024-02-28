@@ -5,6 +5,9 @@ import { TournamentAddModel, TournamentUpdateModel } from '../shared/models/tour
 import { SportsList } from 'src/app/sport/shared/models/sport.model';
 import { TournamentsService } from '../shared/services/tournament.service';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+import { SportAddComponent } from 'src/app/sport/sport-add/sport-add.component';
+import { MatDialog } from '@angular/material/dialog';
+import { TournamentsList } from '../shared/models/tournament.model';
 
 @Component({
   selector: 'app-tournament-add',
@@ -18,12 +21,14 @@ export class TournamentAddComponent implements OnInit {
   selectedTournamentId: any;
   pageHeader = 'Add Tournament';
   sportsList: SportsList[];
+  tournaments: TournamentsList[];
 
   constructor(
     private tournamentService: TournamentsService,
     private snackBarService: SnackbarService,
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<TournamentAddComponent>,
+    private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
 
@@ -58,6 +63,14 @@ export class TournamentAddComponent implements OnInit {
     });
   }
 
+  getAllTournaments() {
+    this.tournamentService.getAllTournaments().subscribe(res => {
+      if (res && res.success) {
+        this.tournaments = res.data;
+      }
+    });
+  }s
+
   addTournament() {
     if (this.data?.mode === 'edit') {
       if (this.tournamentForm.valid) {
@@ -66,7 +79,7 @@ export class TournamentAddComponent implements OnInit {
         this.tournamentService.updateTournament(this.tournamentUpdateModel).subscribe(res => {
           if (res && res.success) {
             this.snackBarService.success(res.message);
-            this.dialogRef.close();
+            this.dialogRef.close();            
           } else {
             this.snackBarService.error(res.message);
           }
@@ -78,12 +91,29 @@ export class TournamentAddComponent implements OnInit {
         this.tournamentService.addTournament(this.tournamentAddModel).subscribe(res => {
           if (res && res.success) {
             this.snackBarService.success(res.message);
-            this.dialogRef.close();
+            this.dialogRef.close();   
           } else {
             this.snackBarService.error(res.message);
           }
-        });
+        });        
       }
-    }
+    }    
+  }
+
+  addSport() {
+    // Open Add Component in a dialog without passing any data
+    const dialogRef = this.dialog.open(SportAddComponent, {
+      data: { mode: 'add' },
+      width: '900px', // Set the width as per your requirement
+      height: '400px', // Set the height as per your requirement
+      panelClass: 'custom-dialog-container', // Custom CSS class for styling
+      autoFocus: false,
+    });
+
+    // Subscribe to dialog close event
+    dialogRef.afterClosed().subscribe((result) => {
+      this.getActiveSports();
+      // Handle any action after dialog closes
+    });
   }
 }

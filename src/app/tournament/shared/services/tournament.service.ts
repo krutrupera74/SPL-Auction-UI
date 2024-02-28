@@ -36,4 +36,8 @@ export class TournamentsService {
     updateTournament(request: TournamentUpdateModel): Observable<ResponseModel> {
         return this.httpClient.post(this.ApiEndPoint + 'Tournaments/Edit', request).pipe(map((response => response as ResponseModel)));
     }
+
+    deleteTournament(id: string): Observable<ResponseModel> {
+        return this.httpClient.delete(this.ApiEndPoint + 'Tournaments/DeleteTournament?id=' + id).pipe(map((response => response as ResponseModel)));
+    }
 }

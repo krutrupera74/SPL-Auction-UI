@@ -3,6 +3,7 @@ import { TeamsList } from '../shared/models/team.model';
 import { TeamsService } from '../shared/services/team.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TeamAddComponent } from '../team-add/team-add.component';
+import { ConfirmationDialog } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-team-list',
@@ -12,11 +13,11 @@ import { TeamAddComponent } from '../team-add/team-add.component';
 export class TeamListComponent implements OnInit {
 
   teams: TeamsList[];
-  displayedColumns: string[] = ['Logo', 'Name', 'Tournament', 'IsActive', 'Action'];
+  displayedColumns: string[] = ['Logo', 'Name', 'Tournament', 'Action'];
 
   constructor(
     private dialog: MatDialog,
-    private teamsService: TeamsService
+    private teamsService: TeamsService,
     ){
       
     }
@@ -43,6 +44,10 @@ export class TeamListComponent implements OnInit {
       panelClass: 'custom-dialog-container', // Custom CSS class for styling
       autoFocus: false,
     });
+    dialogRef.afterClosed().subscribe((result) => {
+      this.getAllTeams();
+      // Handle any action after dialog closes
+    });
   }
 
   editTeam(data) {
@@ -61,4 +66,24 @@ export class TeamListComponent implements OnInit {
       });
     });
   }
+ 
+  deleteTeam(data) {
+    this.teamsService.deleteTeam(data.id).subscribe(res => {      
+        this.getAllTeams();      
+    });
+  }  
+
+  openDialog(data) {    
+    const dialogRef = this.dialog.open(ConfirmationDialog,{
+    data:{
+        message: 'Do you want to delete this team?'
+    }
+    });
+     
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+        if (confirmed) {
+          this.deleteTeam(data);   
+        }
+    });
+}
 }

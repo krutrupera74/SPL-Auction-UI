@@ -40,4 +40,8 @@ export class SportsService {
     updateSport(request: SportsUpdateModel): Observable<ResponseModel> {
         return this.httpClient.post(this.ApiEndPoint + 'Sports/EditSport', request).pipe(map((response => response as ResponseModel)));
     }
+
+    deleteSport(id: string): Observable<ResponseModel> {
+        return this.httpClient.delete(this.ApiEndPoint + 'Sports/DeleteSport?id=' + id).pipe(map((response => response as ResponseModel)));
+    }
 }
