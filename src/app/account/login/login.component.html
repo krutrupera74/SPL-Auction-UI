@@ -1,5 +1,5 @@
 <!-- login.component.html -->
-
+<div class="panel panel-default" [ngStyle]="{'background-image': getUrl()}">
 <div class="background-image">
     <div class="login-container">
         <mat-card class="login-card">
@@ -25,9 +25,10 @@
                     </mat-form-field>
 
                     <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid"
-                        (click)="Login()">Login</button>
+                        (click)="Login()"><mat-icon>how_to_reg</mat-icon>Login</button>
                 </form>
             </mat-card-content>
         </mat-card>
     </div>
+</div>
 </div>

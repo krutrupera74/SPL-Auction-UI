@@ -50,4 +50,9 @@ export class LoginComponent implements OnInit {
       });
     }
   }
+
+  getUrl()
+  {
+    return "url('https://img.freepik.com/free-vector/t20-world-cup-cricket-championship-poster-flyer-template-brochure-decorated-banner-design_460848-15804.jpg?size=626&ext=jpg&ga=GA1.1.1854874554.1709120371&semt=sph')";
+  }
 }
