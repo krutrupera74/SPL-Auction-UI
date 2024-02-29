@@ -27,7 +27,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.getDashboardData();
     this.isAdmin = this.commonService.getUserRole() === 'Admin';
-    console.log('Is admin?', this.isAdmin);
   }
 
   getDashboardData() {

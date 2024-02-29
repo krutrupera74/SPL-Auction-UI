@@ -32,8 +32,6 @@ export class SportListComponent implements OnInit {
     this.sportsService.getAllSports().subscribe(res => {
       if (res && res.success) {
         this.sports = res.data;
-        console.log(this.sports);
-
       }
     });
   }
