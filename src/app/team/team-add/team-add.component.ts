@@ -1,11 +1,12 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { TournamentsList } from 'src/app/tournament/shared/models/tournament.model';
 import { TeamsService } from '../shared/services/team.service';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs';
+import { TournamentAddComponent } from 'src/app/tournament/tournament-add/tournament-add.component';
 
 @Component({
   selector: 'app-team-add',
@@ -29,6 +30,7 @@ export class TeamAddComponent implements OnInit {
     private snackBarService: SnackbarService,
     private http: HttpClient,
     public dialogRef: MatDialogRef<TeamAddComponent>,
+    private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
 
@@ -134,4 +136,24 @@ export class TeamAddComponent implements OnInit {
     }
     return new Blob([ab], { type: 'image/jpeg' });
   }
+
+  onIconClick(event: MouseEvent): void {
+    event.stopPropagation();
+    this.addTournament();
+  }
+
+  addTournament() {
+    // Open Add Component in a dialog without passing any data
+    const dialogRef = this.dialog.open(TournamentAddComponent, {
+      data: { mode: 'add' },
+      width: '900px', // Set the width as per your requirement
+      height: '700px', // Set the height as per your requirement
+      panelClass: 'custom-dialog-container', // Custom CSS class for styling
+      autoFocus: false,
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      this.getActiveTournaments();
+      // Handle any action after dialog closes
+    });
+  }  
 }

@@ -21,8 +21,11 @@
                 </mat-option>
             </mat-select>
             <mat-error *ngIf="teamForm.get('tournamentId').hasError('required')">
-                Sport is required.
+                Tournament is required.
             </mat-error>
+            <button mat-mini-fab matIconSuffix color="accent" class="plus-btn" (click)="onIconClick($event)">
+                <mat-icon>add</mat-icon>
+            </button>
         </mat-form-field>
 
         <mat-slide-toggle formControlName="isActive" color="accent" class="example-full-width mb-4">Is

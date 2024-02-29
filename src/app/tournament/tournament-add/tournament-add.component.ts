@@ -69,7 +69,7 @@ export class TournamentAddComponent implements OnInit {
         this.tournaments = res.data;
       }
     });
-  }s
+  } s
 
   addTournament() {
     if (this.data?.mode === 'edit') {
@@ -79,7 +79,7 @@ export class TournamentAddComponent implements OnInit {
         this.tournamentService.updateTournament(this.tournamentUpdateModel).subscribe(res => {
           if (res && res.success) {
             this.snackBarService.success(res.message);
-            this.dialogRef.close();            
+            this.dialogRef.close();
           } else {
             this.snackBarService.error(res.message);
           }
@@ -91,13 +91,20 @@ export class TournamentAddComponent implements OnInit {
         this.tournamentService.addTournament(this.tournamentAddModel).subscribe(res => {
           if (res && res.success) {
             this.snackBarService.success(res.message);
-            this.dialogRef.close();   
+            this.dialogRef.close();
           } else {
             this.snackBarService.error(res.message);
           }
-        });        
+        });
       }
-    }    
+    }
+  }
+
+  onIconClick(event: MouseEvent): void {
+    event.stopPropagation();
+    // Add your additional logic here
+    // For example, you can call the 'addSport()' method
+    this.addSport();
   }
 
   addSport() {

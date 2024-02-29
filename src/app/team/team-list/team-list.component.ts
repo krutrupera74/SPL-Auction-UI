@@ -39,8 +39,8 @@ export class TeamListComponent implements OnInit {
     // Open Add Component in a dialog without passing any data
     const dialogRef = this.dialog.open(TeamAddComponent, {
       data: { mode: 'add' },
-      width: '900px', // Set the width as per your requirement
-      height: '700px', // Set the height as per your requirement
+      width: '1000px', // Set the width as per your requirement
+      height: '800px', // Set the height as per your requirement
       panelClass: 'custom-dialog-container', // Custom CSS class for styling
       autoFocus: false,
     });
@@ -54,8 +54,8 @@ export class TeamListComponent implements OnInit {
     this.teamsService.getTeamById(data.id).subscribe(res => {
       const dialogRef = this.dialog.open(TeamAddComponent, {
         data: { mode: 'edit', item: res.data },
-        width: '900px', // Set the width as per your requirement
-        height: '700px', // Set the height as per your requirement
+        width: '1000px', // Set the width as per your requirement
+        height: '800px', // Set the height as per your requirement
         panelClass: 'custom-dialog-container', // Custom CSS class for styling
         autoFocus: false,
       });
