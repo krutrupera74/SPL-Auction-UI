@@ -14,6 +14,8 @@ export class SnackbarService {
         const config: MatSnackBarConfig = {
             duration: timeout || this.defaultTimeout,
             panelClass: [panelClass],
+            horizontalPosition: 'end',
+            verticalPosition: 'top'
         };
 
         this.snackBar.open(message, 'Close', config);
