@@ -16,21 +16,29 @@
 
         <mat-form-field class="example-full-width">
             <mat-label>Start Date</mat-label>
-            <input matInput [matDatepicker]="pickerStartDate" formControlName="startDate" name="startDate" required>
+            <input matInput [matDatepicker]="pickerStartDate" formControlName="startDate" name="startDate"
+                [min]="minStartDate" (dateChange)="dateChange($event)" required>
             <mat-datepicker-toggle matIconSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
             <mat-datepicker #pickerStartDate></mat-datepicker>
             <mat-error *ngIf="tournamentForm.get('startDate').hasError('required')">
                 Start Date is required
             </mat-error>
+            <mat-error *ngIf="tournamentForm.get('startDate').hasError('matDatepickerMin')">
+                Start Date should be greater than or equal to today's date.
+            </mat-error>
         </mat-form-field>
 
         <mat-form-field class="example-full-width">
             <mat-label>End Date</mat-label>
-            <input matInput [matDatepicker]="pickerEndDate" formControlName="endDate" name="endDate" required>
+            <input matInput [matDatepicker]="pickerEndDate" formControlName="endDate" name="endDate" [min]="minDate"
+                required>
             <mat-datepicker-toggle matIconSuffix [for]="pickerEndDate"></mat-datepicker-toggle>
             <mat-datepicker #pickerEndDate></mat-datepicker>
             <mat-error *ngIf="tournamentForm.get('endDate').hasError('required')">
                 End Date is required
+            </mat-error>
+            <mat-error *ngIf="tournamentForm.get('endDate').hasError('matDatepickerMin')">
+                End Date should be greater than Start Date.
             </mat-error>
         </mat-form-field>
 

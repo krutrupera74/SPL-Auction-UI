@@ -8,6 +8,7 @@ import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { SportAddComponent } from 'src/app/sport/sport-add/sport-add.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TournamentsList } from '../shared/models/tournament.model';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-tournament-add',
@@ -22,6 +23,9 @@ export class TournamentAddComponent implements OnInit {
   pageHeader = 'Add Tournament';
   sportsList: SportsList[];
   tournaments: TournamentsList[];
+  minStartDate: Date;
+  minDateToFinish = new Subject<string>();
+  minDate;
 
   constructor(
     private tournamentService: TournamentsService,
@@ -31,7 +35,10 @@ export class TournamentAddComponent implements OnInit {
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-
+    this.minStartDate = new Date();
+    this.minDateToFinish.subscribe(r => {
+      this.minDate = new Date(r);
+    })
   }
 
   ngOnInit() {
@@ -71,7 +78,7 @@ export class TournamentAddComponent implements OnInit {
     });
   } s
 
-  addTournament() {
+  addTournament() {  
     if (this.data?.mode === 'edit') {
       if (this.tournamentForm.valid) {
         this.tournamentUpdateModel = this.tournamentForm.value;
@@ -122,5 +129,9 @@ export class TournamentAddComponent implements OnInit {
       this.getActiveSports();
       // Handle any action after dialog closes
     });
+  }
+
+  dateChange(e) {
+    this.minDateToFinish.next(e.value?.toString());
   }
 }
