@@ -58,8 +58,6 @@ export class UsersAddComponent implements OnInit {
   }
 
   addUser() {
-    console.log(this.userForm.value);
-
     if (this.data?.mode === 'edit') {
       this.userUpdateModel = this.userForm.value;
       this.userUpdateModel.id = this.selectedUserId;

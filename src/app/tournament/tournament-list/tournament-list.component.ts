@@ -4,6 +4,7 @@ import { TournamentAddComponent } from '../tournament-add/tournament-add.compone
 import { MatDialog } from '@angular/material/dialog';
 import { TournamentsService } from '../shared/services/tournament.service';
 import { ConfirmationDialog } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 
 @Component({
   selector: 'app-tournament-list',
@@ -19,7 +20,8 @@ export class TournamentListComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    private tournamentService: TournamentsService
+    private tournamentService: TournamentsService,
+    private snackBarService: SnackbarService
   ) {
 
   }
@@ -68,23 +70,28 @@ export class TournamentListComponent implements OnInit {
   }
 
   deleteTournament(data) {
-    this.tournamentService.deleteTournament(data.id).subscribe(res => {      
-        this.getAllTournaments();      
+    this.tournamentService.deleteTournament(data.id).subscribe(res => {
+      if (res && res.success) {
+        this.snackBarService.success(res.message);
+        this.getAllTournaments();
+      } else {
+        this.snackBarService.error(res.message);
+      }
     });
   }
 
-  openDialog(data) {    
-    const dialogRef = this.dialog.open(ConfirmationDialog,{
-    data:{
+  openDialog(data) {
+    const dialogRef = this.dialog.open(ConfirmationDialog, {
+      data: {
         message: 'Do you want to delete this tournament?'
-    }
+      }
     });
-     
+
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
-        if (confirmed) {
-          this.deleteTournament(data);   
-        }
+      if (confirmed) {
+        this.deleteTournament(data);
+      }
     });
-}
+  }
 
 }

@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SportsList } from '../shared/models/sport.model';
 import { SportsService } from '../shared/services/sports.service';
 import { ConfirmationDialog } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 
 @Component({
   selector: 'app-sport-list',
@@ -13,12 +14,13 @@ import { ConfirmationDialog } from 'src/app/shared/confirmation-dialog/confirmat
 export class SportListComponent implements OnInit {
   sports: SportsList[];
   addSportDialog = false;
-  displayedColumns: string[] = ['Name', 'Organization','Action'];
+  displayedColumns: string[] = ['Name', 'Organization', 'Action'];
   @ViewChild(SportAddComponent) sportAddComponent: SportAddComponent;
 
   constructor(
     private dialog: MatDialog,
-    private sportsService: SportsService
+    private sportsService: SportsService,
+    private snackBarService: SnackbarService
   ) {
 
   }
@@ -30,8 +32,6 @@ export class SportListComponent implements OnInit {
     this.sportsService.getAllSports().subscribe(res => {
       if (res && res.success) {
         this.sports = res.data;
-        console.log(this.sports);
-        
       }
     });
   }
@@ -68,26 +68,31 @@ export class SportListComponent implements OnInit {
       this.getAllSports();
       // Handle any action after dialog closes
     });
-  }  
-
-  deleteSports(data){
-    this.sportsService.deleteSport(data.id).subscribe(res => {      
-      this.getAllSports();      
-  });
   }
 
-  openDialog(data) {    
-    const dialogRef = this.dialog.open(ConfirmationDialog,{
-    data:{
+  deleteSports(data) {
+    this.sportsService.deleteSport(data.id).subscribe(res => {
+      if (res && res.success) {
+        this.snackBarService.success(res.message);
+        this.getAllSports();
+      } else {
+        this.snackBarService.error(res.message);
+      }
+    });
+  }
+
+  openDialog(data) {
+    const dialogRef = this.dialog.open(ConfirmationDialog, {
+      data: {
         message: 'Do you want to delete this sport?'
-    }
+      }
     });
-     
+
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
-        if (confirmed) {
-          this.deleteSports(data);      
-        }
+      if (confirmed) {
+        this.deleteSports(data);
+      }
     });
-} 
+  }
 
 }

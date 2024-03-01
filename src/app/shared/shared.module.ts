@@ -20,6 +20,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { RouterModule } from '@angular/router';
 import { MatRadioModule } from '@angular/material/radio';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @NgModule({
     declarations: [
@@ -46,7 +48,9 @@ import { MatRadioModule } from '@angular/material/radio';
         MatTableModule,
         NgxMatSelectSearchModule,
         MatDialogModule,
-        MatRadioModule
+        MatRadioModule,
+        MatProgressSpinnerModule,
+        MatProgressBarModule
     ],
     exports: [
         FormsModule,
@@ -68,7 +72,9 @@ import { MatRadioModule } from '@angular/material/radio';
         MatTableModule,
         NgxMatSelectSearchModule,
         MatDialogModule,
-        MatRadioModule
+        MatRadioModule,
+        MatProgressSpinnerModule,
+        MatProgressBarModule
     ]
 })
 export class SharedModule { }

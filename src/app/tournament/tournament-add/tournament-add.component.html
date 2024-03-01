@@ -46,15 +46,19 @@
             <mat-select formControlName="sportId" placeholder="Sport*">
                 <mat-option *ngFor="let sport of sportsList" [value]="sport.id">
                     {{ sport.name }}
-                </mat-option>                
+                </mat-option>
             </mat-select>
-            <button mat-fab matIconSuffix (click)="addSport()"><mat-icon>add</mat-icon></button>    
             <mat-error *ngIf="tournamentForm.get('sportId').hasError('required')">
                 Sport is required.
-            </mat-error>    
+            </mat-error>
+            <button mat-mini-fab matIconSuffix color="accent" class="plus-btn" (click)="onIconClick($event)">
+                <mat-icon>add</mat-icon>
+            </button>
         </mat-form-field>
+
         <mat-slide-toggle formControlName="isActive" color="accent" class="example-full-width mb-4">Is
-            Active</mat-slide-toggle>                
-        <button mat-raised-button color="primary" type="submit" (click)="addTournament()"><mat-icon>add_box</mat-icon>Add Tournament</button>
+            Active</mat-slide-toggle>
+        <button mat-raised-button color="primary" type="submit"
+            (click)="addTournament()"><mat-icon>add_box</mat-icon>Add Tournament</button>
     </form>
 </div>

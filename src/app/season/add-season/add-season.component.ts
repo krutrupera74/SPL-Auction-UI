@@ -56,7 +56,6 @@ export class AddSeasonComponent implements OnInit {
   uploadImage(): void {
     // Perform the image upload logic here
     const file: File = this.addSeasonForm.get('image').value;
-    console.log(file);
 
     // Reset form and preview after successful upload
     this.addSeasonForm.reset();
@@ -66,7 +65,6 @@ export class AddSeasonComponent implements OnInit {
   addSeason() {
     if (this.addSeasonForm.valid) {
       this.seasonRequest = this.addSeasonForm.value;
-      console.log(this.addSeasonForm.value);
       this.seasonService.addSeason(this.seasonRequest).subscribe(res => {
         if (res && res.success) {
           this.snackBarService.success(res.message);
