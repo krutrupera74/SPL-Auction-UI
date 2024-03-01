@@ -26,6 +26,7 @@ export class TournamentAddComponent implements OnInit {
   minStartDate: Date;
   minDateToFinish = new Subject<string>();
   minDate;
+  isEdit = false;
 
   constructor(
     private tournamentService: TournamentsService,
@@ -54,6 +55,10 @@ export class TournamentAddComponent implements OnInit {
       this.pageHeader = 'Edit Tournament';
       this.selectedTournamentId = this.data?.item.id;
       this.tournamentForm.patchValue(this.data?.item);
+      this.isEdit=true;
+    }
+    else{
+      this.isEdit=false;
     }
     this.getActiveSports();
   }
@@ -79,7 +84,7 @@ export class TournamentAddComponent implements OnInit {
   } s
 
   addTournament() {  
-    if (this.data?.mode === 'edit') {
+    if (this.isEdit) {
       if (this.tournamentForm.valid) {
         this.tournamentUpdateModel = this.tournamentForm.value;
         this.tournamentUpdateModel.id = this.selectedTournamentId;

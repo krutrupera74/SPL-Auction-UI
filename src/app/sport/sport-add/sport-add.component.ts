@@ -19,6 +19,7 @@ export class SportAddComponent implements OnInit {
   sportAddModel: SportsAddModel;
   sportUpdateModel: SportsUpdateModel;
   selectedSportId: any;
+  isEdit = false;
 
   constructor(
     private sportService: SportsService,
@@ -40,6 +41,10 @@ export class SportAddComponent implements OnInit {
       this.pageHeader = 'Edit Sport';
       this.selectedSportId = this.data?.item.id;
       this.sportForm.patchValue(this.data?.item);
+      this.isEdit = true;
+    }
+    else{
+      this.isEdit = false;
     }
   }
 
@@ -49,7 +54,7 @@ export class SportAddComponent implements OnInit {
 
   addSport() {
     const currentUserObject = JSON.parse(this.commonService.getGlobalVariables(Constants.currentUserObject));
-    if (this.data?.mode === 'edit') {
+    if (this.isEdit) {
       if (this.sportForm.valid) {
         this.sportUpdateModel = this.sportForm.value;
         this.sportUpdateModel.id = this.selectedSportId;
