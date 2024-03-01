@@ -29,7 +29,9 @@ export class TeamsService {
             .pipe(map((response => response as ResponseModel)));
     }
 
-    editTeam(formData: any) {
+    editTeam(id: string, formData: any) {
+        formData.append('id', id);
+
         return this.httpClient.post(this.ApiEndPoint + 'Teams/EditTeam', formData)
             .pipe(map((response => response as ResponseModel)));
     }

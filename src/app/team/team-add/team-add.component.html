@@ -49,19 +49,19 @@
             <button mat-raised-button color="warn" (click)="removeImage()" class="ms-2">
                 <mat-icon>delete</mat-icon>Remove Image
             </button>
-            <button mat-raised-button color="primary" type="submit" (click)="addTeam()" class="ms-2">
-                <mat-icon>add_box</mat-icon>Add Team
-            </button>
             <br><br>
             <div *ngIf="!selectedFile && errorMessage">
                 <mat-error>{{errorMessage}}</mat-error>
-              </div>
+            </div>
             <div *ngIf="selectedFile && !isEdit" class="mb-4">
                 <img [src]="selectedFileUrl" alt="Uploaded Image" style="max-width: 400px; max-height: 400px;">
             </div>
             <div *ngIf="isEdit && selectedFileUrl" class="mb-4">
                 <img [src]="selectedFileUrl" alt="Uploaded Image" style="max-width: 400px; max-height: 400px;">
-            </div>            
-        </div>        
+            </div>
+            <button mat-raised-button color="primary" type="submit" (click)="addTeam()">
+                <mat-icon>add_box</mat-icon>Add Team
+            </button>
+        </div>
     </form>
 </div>

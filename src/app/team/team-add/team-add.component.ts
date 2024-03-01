@@ -113,7 +113,7 @@ export class TeamAddComponent implements OnInit {
         formData.append('tournamentId', this.teamForm.controls['tournamentId'].value);
         formData.append('isActive', this.teamForm.controls['isActive'].value);
 
-        this.teamsService.editTeam(formData).subscribe(res => {
+        this.teamsService.editTeam(this.selectedTeamId, formData).subscribe(res => {
           if (res && res.success) {
             this.snackBarService.success(res.message);
             this.dialogRef.close();
@@ -126,7 +126,6 @@ export class TeamAddComponent implements OnInit {
   }
 
   b64toBlob(dataURI) {
-
     const byteString = atob(dataURI.split(',')[1]);
     const ab = new ArrayBuffer(byteString.length);
     const ia = new Uint8Array(ab);
