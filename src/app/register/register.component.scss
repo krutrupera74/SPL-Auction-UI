@@ -43,3 +43,18 @@ mat-form-field {
 h1 {
     font-size: 4em; /* Adjust font size as needed */
 }
+
+.avatar-container {
+    display: ruby-text;
+}
+
+.avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+input[type="file"] {
+    display: none;
+}

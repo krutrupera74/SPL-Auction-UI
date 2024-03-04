@@ -55,10 +55,10 @@ export class TournamentAddComponent implements OnInit {
       this.pageHeader = 'Edit Tournament';
       this.selectedTournamentId = this.data?.item.id;
       this.tournamentForm.patchValue(this.data?.item);
-      this.isEdit=true;
+      this.isEdit = true;
     }
-    else{
-      this.isEdit=false;
+    else {
+      this.isEdit = false;
     }
     this.getActiveSports();
   }
@@ -83,11 +83,20 @@ export class TournamentAddComponent implements OnInit {
     });
   } s
 
-  addTournament() {  
+  addTournament() {
     if (this.isEdit) {
       if (this.tournamentForm.valid) {
         this.tournamentUpdateModel = this.tournamentForm.value;
         this.tournamentUpdateModel.id = this.selectedTournamentId;
+        //Format Start Date
+        const startDate = new Date(this.tournamentForm.controls['startDate'].value);
+        const startIsoString = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth() + 1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2) + 'T' + ('0' + startDate.getHours()).slice(-2) + ':' + ('0' + startDate.getMinutes()).slice(-2) + ':' + ('0' + startDate.getSeconds()).slice(-2) + '.' + ('00' + startDate.getMilliseconds()).slice(-3) + 'Z';
+        this.tournamentUpdateModel.startDate = startIsoString;
+
+        //Format End Date
+        const endDate = new Date(this.tournamentForm.controls['endDate'].value);
+        const endIsoString = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth() + 1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2) + 'T' + ('0' + endDate.getHours()).slice(-2) + ':' + ('0' + endDate.getMinutes()).slice(-2) + ':' + ('0' + endDate.getSeconds()).slice(-2) + '.' + ('00' + endDate.getMilliseconds()).slice(-3) + 'Z';
+        this.tournamentUpdateModel.endDate = endIsoString;
         this.tournamentService.updateTournament(this.tournamentUpdateModel).subscribe(res => {
           if (res && res.success) {
             this.snackBarService.success(res.message);
@@ -100,6 +109,16 @@ export class TournamentAddComponent implements OnInit {
     } else {
       if (this.tournamentForm.valid) {
         this.tournamentAddModel = this.tournamentForm.value;
+
+        //Format Start Date
+        const startDate = new Date(this.tournamentForm.controls['startDate'].value);
+        const startIsoString = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth() + 1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2) + 'T' + ('0' + startDate.getHours()).slice(-2) + ':' + ('0' + startDate.getMinutes()).slice(-2) + ':' + ('0' + startDate.getSeconds()).slice(-2) + '.' + ('00' + startDate.getMilliseconds()).slice(-3) + 'Z';
+        this.tournamentAddModel.startDate = startIsoString;
+
+        //Format End Date
+        const endDate = new Date(this.tournamentForm.controls['endDate'].value);
+        const endIsoString = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth() + 1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2) + 'T' + ('0' + endDate.getHours()).slice(-2) + ':' + ('0' + endDate.getMinutes()).slice(-2) + ':' + ('0' + endDate.getSeconds()).slice(-2) + '.' + ('00' + endDate.getMilliseconds()).slice(-3) + 'Z';
+        this.tournamentAddModel.endDate = endIsoString;
         this.tournamentService.addTournament(this.tournamentAddModel).subscribe(res => {
           if (res && res.success) {
             this.snackBarService.success(res.message);

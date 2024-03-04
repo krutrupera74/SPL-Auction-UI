@@ -18,9 +18,12 @@ export class RegisterComponent implements OnInit {
   tournamentId: string;
   player: any = {};
   isTournamentValid = null;
-  tournamentData = '';
+  tournamentData: any;
   loading = true;
   addPlayerRequestModel: AddPlayerRequestModel;
+  selectedFile: File | null = null;
+  selectedFileUrl: string | ArrayBuffer | null = './../../assets/images/shared/avatar.png';
+  isCricket = false;
 
   constructor(
     private commonService: CommonService,
@@ -34,10 +37,26 @@ export class RegisterComponent implements OnInit {
     this.commonService.setPageTitle('Register');
     this.registerForm = this.fb.group({
       name: ['', [Validators.required]],
+      email: ['', [Validators.email]],
+      employeeNo: ['', [Validators.required]],
       gender: [true, [Validators.required]],
       playerRating: [0],
+      battingRating: [0],
+      bowlingRating: [0],
+      wicketKeepingRating: [0],
+      batsmanHand: ['', [Validators.required]],
+      bowlerHand: ['', [Validators.required]],
+      bowlingStyle: ['', [Validators.required]],
+      interestedInCaptainOrOwner: [false],
+      captainOrOwner: ['captain'],
       comments: ['']
     });
+    this.registerForm.get('interestedInCaptainOrOwner').valueChanges.subscribe(checked => {
+      if (!checked) {
+        this.registerForm.get('captainOrOwner').setValue('captain');
+      }
+    });
+
     this.activatedRoute.params.subscribe(params => {
       this.tournamentId = params['tournamentId'];
       if (this.tournamentId) {
@@ -51,20 +70,28 @@ export class RegisterComponent implements OnInit {
       if (res && res.success) {
         this.isTournamentValid = true;
         this.tournamentData = res.data;
+        this.isCricket = this.tournamentData.isCricket;
         this.loading = false;
       } else {
         this.isTournamentValid = false;
+        this.isCricket = false;
         this.loading = false;
       }
     });
   }
 
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+    this.selectedFileUrl = this.selectedFile ? URL.createObjectURL(this.selectedFile) : null;
+  }
+
+
   submitForm() {
-    if(this.registerForm.valid) {
+    if (this.registerForm.valid) {
       this.addPlayerRequestModel = this.registerForm.value;
       this.addPlayerRequestModel.tournamentId = this.tournamentId;
       this.registrationService.RegisterPlayer(this.addPlayerRequestModel).subscribe(res => {
-        if(res && res.success) {
+        if (res && res.success) {
           this.snackBarService.success(res.message);
           this.router.navigate(['/thank-you']);
         }
