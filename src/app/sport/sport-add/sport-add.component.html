@@ -16,7 +16,11 @@
 
         <mat-slide-toggle formControlName="isActive" color="accent" class="example-full-width mb-4">Is
             Active</mat-slide-toggle>
-
-        <button mat-raised-button color="primary" type="submit" (click)="addSport()"><mat-icon>add_box</mat-icon>Add Sport</button>
+        <div *ngIf="isEdit">
+            <button mat-raised-button color="primary" type="submit" (click)="addSport()"><mat-icon>update</mat-icon>Update Sport</button>
+        </div>
+        <div *ngIf="!isEdit">
+            <button mat-raised-button color="primary" type="submit" (click)="addSport()"><mat-icon>add_box</mat-icon>Add Sport</button>
+        </div>
     </form>
 </div>
