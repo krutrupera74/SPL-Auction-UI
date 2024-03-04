@@ -4,6 +4,10 @@
     </h1>
 
     <form [formGroup]="registerForm" class="example-form">
+        <div class="avatar-container">
+            <img [src]="selectedFileUrl" alt="Avatar" class="avatar" (click)="fileInput.click()">
+            <input type="file" #fileInput accept="image/*" (change)="onFileSelected($event)">
+        </div>
         <mat-form-field class="example-full-width">
             <mat-label>Player Name</mat-label>
             <input matInput formControlName="name" placeholder="Enter Player Name" />
@@ -21,7 +25,7 @@
             </mat-radio-group>
         </div>
 
-        <div class="example-full-width">
+        <div class="example-full-width" *ngIf="!isCricket">
             <label>Player Rating : </label>
             <mat-slider class="example-margin" [max]="10" [min]="0" [step]="1" [discrete]="false"
                 [showTickMarks]="true">
@@ -31,6 +35,80 @@
             <label class="example-value-label">{{sliderPlayerRating.value}}</label>
         </div>
 
+        <div class="example-full-width" *ngIf="isCricket">
+            <label>Batting Rating : </label>
+            <mat-slider class="example-margin" [max]="10" [min]="0" [step]="1" [discrete]="false"
+                [showTickMarks]="true">
+                <input matSliderThumb formControlName="battingRating" #sliderBattingRating
+                    [ngModelOptions]="{standalone: true}">
+            </mat-slider>
+            <label class="example-value-label">{{sliderBattingRating.value}}</label>
+        </div>
+
+        <div class="example-full-width" *ngIf="isCricket">
+            <label>Bowling Rating : </label>
+            <mat-slider class="example-margin" [max]="10" [min]="0" [step]="1" [discrete]="false"
+                [showTickMarks]="true">
+                <input matSliderThumb formControlName="bowlingRating" #sliderBowlingRating
+                    [ngModelOptions]="{standalone: true}">
+            </mat-slider>
+            <label class="example-value-label">{{sliderBowlingRating.value}}</label>
+        </div>
+
+        <div class="example-full-width" *ngIf="isCricket">
+            <label>Wicket Keeping Rating : </label>
+            <mat-slider class="example-margin" [max]="10" [min]="0" [step]="1" [discrete]="false"
+                [showTickMarks]="true">
+                <input matSliderThumb formControlName="wicketKeepingRating" #sliderWicketKeepingRating
+                    [ngModelOptions]="{standalone: true}">
+            </mat-slider>
+            <label class="example-value-label">{{sliderWicketKeepingRating.value}}</label>
+        </div>
+
+        <mat-form-field class="example-full-width" *ngIf="isCricket">
+            <mat-label>Preferred Batting Hand</mat-label>
+            <mat-select formControlName="batsmanHand">
+                <mat-option value="left">Left</mat-option>
+                <mat-option value="right">Right</mat-option>
+            </mat-select>
+            <mat-error *ngIf="registerForm.get('batsmanHand').hasError('required')">
+                Preferred Batting Hand is required.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" *ngIf="isCricket">
+            <mat-label>Preferred Bowling Hand</mat-label>
+            <mat-select formControlName="bowlerHand">
+                <mat-option value="left">Left</mat-option>
+                <mat-option value="right">Right</mat-option>
+            </mat-select>
+            <mat-error *ngIf="registerForm.get('bowlerHand').hasError('required')">
+                Preferred Bowling Hand is required.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" *ngIf="isCricket">
+            <mat-label>Bowling Style</mat-label>
+            <mat-select formControlName="bowlingStyle">
+                <mat-option value="fast">Fast</mat-option>
+                <mat-option value="medium">Medium</mat-option>
+                <mat-option value="wristSpinner">Wrist Spinner</mat-option>
+                <mat-option value="fingerSpinner">Finger Spinner</mat-option>
+            </mat-select>
+            <mat-error *ngIf="registerForm.get('bowlingStyle').hasError('required')">
+                Bowling style is required.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-checkbox formControlName="interestedInCaptainOrOwner">Interested in being Captain / Owner</mat-checkbox>
+
+        <div *ngIf="registerForm.get('interestedInCaptainOrOwner').value">
+            <mat-radio-group formControlName="captainOrOwner">
+                <mat-radio-button value="captain">Captain</mat-radio-button>
+                <mat-radio-button value="owner">Owner</mat-radio-button>
+            </mat-radio-group>
+        </div>
+
         <mat-form-field class="example-full-width mt-3">
             <mat-label>Comments</mat-label>
             <textarea matInput formControlName="comments" name="comments"></textarea>
@@ -38,7 +116,7 @@
                 Comments is required
             </mat-error>
         </mat-form-field>
-        <button mat-raised-button color="primary" (click)="submitForm()">Submit</button>
+        <button mat-raised-button color="primary" (click)="submitForm()">Register</button>
         <!-- </mat-form-field> -->
     </form>
 

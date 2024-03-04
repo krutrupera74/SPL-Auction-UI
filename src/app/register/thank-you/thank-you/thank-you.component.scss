@@ -1,0 +1,31 @@
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+}
+
+.container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 1; /* Ensure message is above the confetti canvas */
+}
+
+.container h1 {
+    font-size: 4rem; /* Increase font size */
+    font-family: "Russo One", sans-serif;
+
+    color: #c0c0c0; /* Change font color */
+}
+
+.container h2 {
+    font-size: 3rem; /* Increase font size */
+    font-family: "Russo One", sans-serif;
+
+    color: #c0c0c0; /* Change font color */
+}
