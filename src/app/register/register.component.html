@@ -8,11 +8,39 @@
             <img [src]="selectedFileUrl" alt="Avatar" class="avatar" (click)="fileInput.click()">
             <input type="file" #fileInput accept="image/*" (change)="onFileSelected($event)">
         </div>
+        <div *ngIf="!selectedFile && errorMessage" class="center-error">
+            <mat-error>{{errorMessage}}</mat-error>
+        </div>
+
         <mat-form-field class="example-full-width">
             <mat-label>Player Name</mat-label>
             <input matInput formControlName="name" placeholder="Enter Player Name" />
             <mat-error *ngIf="registerForm.get('name').hasError('required')">
                 Player Name is required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" placeholder="Enter Email" />
+            <mat-error *ngIf="registerForm.get('email').hasError('required')">
+                Email is required
+            </mat-error>
+            <mat-error
+                *ngIf="registerForm.get('email').hasError('synoptekEmail') && !registerForm.get('email').hasError('required')">
+                You must use only Synoptek email account
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <mat-label>Employee Id</mat-label>
+            <input matInput formControlName="employeeNo" placeholder="Enter Employee Id" />
+            <mat-error *ngIf="registerForm.get('employeeNo').errors?.required">
+                Employee Id is required
+            </mat-error>
+            <mat-error
+                *ngIf="registerForm.get('employeeNo').errors?.pattern && !registerForm.get('employeeNo').errors?.required">
+                Please enter numbers only
             </mat-error>
         </mat-form-field>
 
@@ -92,8 +120,8 @@
             <mat-select formControlName="bowlingStyle">
                 <mat-option value="fast">Fast</mat-option>
                 <mat-option value="medium">Medium</mat-option>
-                <mat-option value="wristSpinner">Wrist Spinner</mat-option>
-                <mat-option value="fingerSpinner">Finger Spinner</mat-option>
+                <mat-option value="wristSpinner">Wrist Spinner (Leg Spin)</mat-option>
+                <mat-option value="fingerSpinner">Finger Spinner (Off Spin)</mat-option>
             </mat-select>
             <mat-error *ngIf="registerForm.get('bowlingStyle').hasError('required')">
                 Bowling style is required.
@@ -117,21 +145,6 @@
             </mat-error>
         </mat-form-field>
         <button mat-raised-button color="primary" (click)="submitForm()">Register</button>
-        <!-- </mat-form-field> -->
     </form>
 
-    <!-- <form class="example-form">
-        <mat-form-field class="example-full-width">
-            <textarea matInput placeholder="Comments" [(ngModel)]="player.comments" name="comments"></textarea>
-        </mat-form-field>
-
-        <button mat-raised-button color="primary" (click)="submitForm()">Submit</button>
-    </form> -->
-
-</div>
-
-<div class="center" *ngIf="!isTournamentValid && !loading">
-    <h1>
-        Ha Ha Nice Try !!!
-    </h1>
 </div>

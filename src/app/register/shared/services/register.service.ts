@@ -21,7 +21,7 @@ export class RegistrationService {
         return this.httpClient.get(this.ApiEndPoint + 'Registration/ValidateTournament?id='+tournamentId).pipe(map((response => response as ResponseModel)));
     }
 
-    RegisterPlayer(request: AddPlayerRequestModel): Observable<ResponseModel> {
-        return this.httpClient.post(this.ApiEndPoint + 'Registration/RegisterPlayer', request).pipe(map((response => response as ResponseModel)));
+    RegisterPlayer(formData: any): Observable<ResponseModel> {
+        return this.httpClient.post(this.ApiEndPoint + 'Registration/RegisterPlayer', formData).pipe(map((response => response as ResponseModel)));
     }
 }

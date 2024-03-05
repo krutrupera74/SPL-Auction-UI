@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonService } from '../shared/services/common.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RegistrationService } from './shared/services/register.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { AddPlayerRequestModel } from './shared/models/player.model';
 import { SnackbarService } from '../shared/services/snackbar.service';
 import { Constants } from '../shared/constants/constant';
@@ -24,6 +24,8 @@ export class RegisterComponent implements OnInit {
   selectedFile: File | null = null;
   selectedFileUrl: string | ArrayBuffer | null = './../../assets/images/shared/avatar.png';
   isCricket = false;
+  errorMessage: string | null = null;
+  @ViewChild('fileInput') fileInput: any;
 
   constructor(
     private commonService: CommonService,
@@ -37,8 +39,8 @@ export class RegisterComponent implements OnInit {
     this.commonService.setPageTitle('Register');
     this.registerForm = this.fb.group({
       name: ['', [Validators.required]],
-      email: ['', [Validators.email]],
-      employeeNo: ['', [Validators.required]],
+      email: ['', [Validators.required, this.synoptekEmailValidator]],
+      employeeNo: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       gender: [true, [Validators.required]],
       playerRating: [0],
       battingRating: [0],
@@ -65,6 +67,13 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  synoptekEmailValidator(control: FormControl): ValidationErrors | null {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@synoptek\.com$/i;
+    const isValid = emailRegex.test(control.value);
+
+    return isValid ? null : { synoptekEmail: true };
+  }
+
   validateTournament(tournamentId) {
     this.registrationService.ValidateTournament(tournamentId).subscribe(res => {
       if (res && res.success) {
@@ -82,18 +91,37 @@ export class RegisterComponent implements OnInit {
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
-    this.selectedFileUrl = this.selectedFile ? URL.createObjectURL(this.selectedFile) : null;
+    this.selectedFileUrl = this.selectedFile ? URL.createObjectURL(this.selectedFile) : './../../assets/images/shared/avatar.png';
   }
 
 
   submitForm() {
+    if (!this.selectedFile) {
+      this.errorMessage = "Please select an Image.";
+      return;
+    }
     if (this.registerForm.valid) {
-      this.addPlayerRequestModel = this.registerForm.value;
-      this.addPlayerRequestModel.tournamentId = this.tournamentId;
-      this.registrationService.RegisterPlayer(this.addPlayerRequestModel).subscribe(res => {
+      const formData = new FormData();
+      formData.append('image', this.selectedFile);
+      formData.append('name', this.registerForm.controls['name'].value);
+      formData.append('email', this.registerForm.controls['email'].value);
+      formData.append('employeeNo', this.registerForm.controls['employeeNo'].value);
+      formData.append('gender', this.registerForm.controls['gender'].value);
+      formData.append('playerRating', this.registerForm.controls['playerRating'].value);
+      formData.append('battingRating', this.registerForm.controls['battingRating'].value);
+      formData.append('bowlingRating', this.registerForm.controls['bowlingRating'].value);
+      formData.append('wicketKeepingRating', this.registerForm.controls['wicketKeepingRating'].value);
+      formData.append('batsmanHand', this.registerForm.controls['batsmanHand'].value);
+      formData.append('bowlerHand', this.registerForm.controls['bowlerHand'].value);
+      formData.append('bowlingStyle', this.registerForm.controls['bowlingStyle'].value);
+      formData.append('interestedInCaptainOrOwner', this.registerForm.controls['interestedInCaptainOrOwner'].value);
+      formData.append('captainOrOwner', this.registerForm.controls['captainOrOwner'].value);
+      formData.append('comments', this.registerForm.controls['comments'].value);
+      formData.append('tournamentId', this.tournamentId);
+      this.registrationService.RegisterPlayer(formData).subscribe(res => {
         if (res && res.success) {
           this.snackBarService.success(res.message);
-          this.router.navigate(['/thank-you']);
+          this.router.navigate(['/register/thank-you']);
         }
       });
     }

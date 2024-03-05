@@ -40,6 +40,14 @@ mat-form-field {
     align-items: center;
 }
 
+.center-error {
+    position: relative;
+    width: 100%; /* Adjust as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 h1 {
     font-size: 4em; /* Adjust font size as needed */
 }
