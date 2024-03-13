@@ -9,6 +9,8 @@ import { SportAddComponent } from 'src/app/sport/sport-add/sport-add.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TournamentsList } from '../shared/models/tournament.model';
 import { Subject } from 'rxjs';
+import { MatCalendarCellCssClasses } from '@angular/material/datepicker';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-tournament-add',
@@ -23,32 +25,29 @@ export class TournamentAddComponent implements OnInit {
   pageHeader = 'Add Tournament';
   sportsList: SportsList[];
   tournaments: TournamentsList[];
-  minStartDate: Date;
-  minDateToFinish = new Subject<string>();
-  minDate;
   isEdit = false;
+  minDate = new Date();
+  selectedDates: Date[] = [];
+  showDateError = false;
+  formattedDates: string;
 
   constructor(
     private tournamentService: TournamentsService,
     private snackBarService: SnackbarService,
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<TournamentAddComponent>,
+    private datePipe: DatePipe,
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.minStartDate = new Date();
-    this.minDateToFinish.subscribe(r => {
-      this.minDate = new Date(r);
-    })
   }
 
   ngOnInit() {
     this.tournamentForm = this.fb.group({
       name: ['', [Validators.required]],
-      startDate: ['', [Validators.required]],
-      endDate: ['', [Validators.required]],
       description: ['', [Validators.required]],
       sportId: ['', [Validators.required]],
+      venue: ['', [Validators.required]],
       isActive: [false]
     });
     if (this.data?.mode === 'edit') {
@@ -81,22 +80,26 @@ export class TournamentAddComponent implements OnInit {
         this.tournaments = res.data;
       }
     });
-  } s
+  }
+
+  formatDates() {
+    this.formattedDates = this.selectedDates.map(date => this.datePipe.transform(date, 'dd-MM-yyyy')).join(',');
+  }
 
   addTournament() {
+    if (this.selectedDates && this.selectedDates.length <= 0) {
+      this.showDateError = true;
+      return;
+    } else {
+      this.showDateError = false;
+      this.formatDates();
+    }
+
     if (this.isEdit) {
       if (this.tournamentForm.valid) {
         this.tournamentUpdateModel = this.tournamentForm.value;
         this.tournamentUpdateModel.id = this.selectedTournamentId;
-        //Format Start Date
-        const startDate = new Date(this.tournamentForm.controls['startDate'].value);
-        const startIsoString = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth() + 1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2) + 'T' + ('0' + startDate.getHours()).slice(-2) + ':' + ('0' + startDate.getMinutes()).slice(-2) + ':' + ('0' + startDate.getSeconds()).slice(-2) + '.' + ('00' + startDate.getMilliseconds()).slice(-3) + 'Z';
-        this.tournamentUpdateModel.startDate = startIsoString;
-
-        //Format End Date
-        const endDate = new Date(this.tournamentForm.controls['endDate'].value);
-        const endIsoString = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth() + 1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2) + 'T' + ('0' + endDate.getHours()).slice(-2) + ':' + ('0' + endDate.getMinutes()).slice(-2) + ':' + ('0' + endDate.getSeconds()).slice(-2) + '.' + ('00' + endDate.getMilliseconds()).slice(-3) + 'Z';
-        this.tournamentUpdateModel.endDate = endIsoString;
+        this.tournamentUpdateModel.tournamentDates = this.formattedDates;
         this.tournamentService.updateTournament(this.tournamentUpdateModel).subscribe(res => {
           if (res && res.success) {
             this.snackBarService.success(res.message);
@@ -109,16 +112,7 @@ export class TournamentAddComponent implements OnInit {
     } else {
       if (this.tournamentForm.valid) {
         this.tournamentAddModel = this.tournamentForm.value;
-
-        //Format Start Date
-        const startDate = new Date(this.tournamentForm.controls['startDate'].value);
-        const startIsoString = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth() + 1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2) + 'T' + ('0' + startDate.getHours()).slice(-2) + ':' + ('0' + startDate.getMinutes()).slice(-2) + ':' + ('0' + startDate.getSeconds()).slice(-2) + '.' + ('00' + startDate.getMilliseconds()).slice(-3) + 'Z';
-        this.tournamentAddModel.startDate = startIsoString;
-
-        //Format End Date
-        const endDate = new Date(this.tournamentForm.controls['endDate'].value);
-        const endIsoString = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth() + 1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2) + 'T' + ('0' + endDate.getHours()).slice(-2) + ':' + ('0' + endDate.getMinutes()).slice(-2) + ':' + ('0' + endDate.getSeconds()).slice(-2) + '.' + ('00' + endDate.getMilliseconds()).slice(-3) + 'Z';
-        this.tournamentAddModel.endDate = endIsoString;
+        this.tournamentAddModel.tournamentDates = this.formattedDates;
         this.tournamentService.addTournament(this.tournamentAddModel).subscribe(res => {
           if (res && res.success) {
             this.snackBarService.success(res.message);
@@ -133,8 +127,6 @@ export class TournamentAddComponent implements OnInit {
 
   onIconClick(event: MouseEvent): void {
     event.stopPropagation();
-    // Add your additional logic here
-    // For example, you can call the 'addSport()' method
     this.addSport();
   }
 
@@ -154,8 +146,11 @@ export class TournamentAddComponent implements OnInit {
       // Handle any action after dialog closes
     });
   }
-
-  dateChange(e) {
-    this.minDateToFinish.next(e.value?.toString());
+  onDateChange() {
+    if (this.selectedDates && this.selectedDates.length > 0) {
+      this.showDateError = false;
+    } else {
+      this.showDateError = true;
+    }
   }
 }

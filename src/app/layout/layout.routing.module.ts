@@ -2,16 +2,11 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from './layout.component';
 import { AuthGuard } from '../guard/auth.guard';
-import { UnauthorizedComponent } from '../shared/components/unauthorized/unauthorized.component';
 const routes: Routes = [
   {
     path: '', component: LayoutComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      {
-        path: 'unauthorized',
-        component: UnauthorizedComponent
-      },
       {
         path: 'dashboard',
         loadChildren: () => import('../dashboard/dashboard.module').then(m => m.DashboardModule),

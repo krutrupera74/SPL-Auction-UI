@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guard/auth.guard';
+import { UnauthorizedComponent } from './shared/components/unauthorized/unauthorized.component';
+import { InvalidTournamentComponent } from './shared/components/invalid-tournament/invalid-tournament.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -20,6 +22,14 @@ const routes: Routes = [
     path: 'register',
     loadChildren: () => import('./register/register.module').then(m => m.RegisterModule),
     canActivate: []
+  },
+  {
+    path: 'unauthorized',
+    component: UnauthorizedComponent
+  },
+  {
+    path: 'invalid-tournament',
+    component: InvalidTournamentComponent
   },
 ];
 

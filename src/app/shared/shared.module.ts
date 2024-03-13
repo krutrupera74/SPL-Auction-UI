@@ -22,11 +22,15 @@ import { RouterModule } from '@angular/router';
 import { MatRadioModule } from '@angular/material/radio';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { NgxMultipleDatesModule } from 'ngx-multiple-dates';
+import { InvalidTournamentComponent } from './components/invalid-tournament/invalid-tournament.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
     declarations: [
         DefaultOptionDirective,
         UnauthorizedComponent,
+        InvalidTournamentComponent,
     ],
     imports: [
         RouterModule,
@@ -50,7 +54,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
         MatDialogModule,
         MatRadioModule,
         MatProgressSpinnerModule,
-        MatProgressBarModule
+        MatProgressBarModule,
+        NgxMultipleDatesModule
     ],
     exports: [
         FormsModule,
@@ -74,7 +79,9 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
         MatDialogModule,
         MatRadioModule,
         MatProgressSpinnerModule,
-        MatProgressBarModule
-    ]
+        MatProgressBarModule,
+        NgxMultipleDatesModule
+    ],
+    providers: [DatePipe]
 })
 export class SharedModule { }
