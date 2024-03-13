@@ -14,32 +14,14 @@
             </mat-error>
         </mat-form-field>
 
+        <mat-error *ngIf="showDateError">
+            You have to select at least one Date.
+        </mat-error>
         <mat-form-field class="example-full-width">
-            <mat-label>Start Date</mat-label>
-            <input matInput [matDatepicker]="pickerStartDate" formControlName="startDate" name="startDate"
-                [min]="minStartDate" (dateChange)="dateChange($event)" required>
-            <mat-datepicker-toggle matIconSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
-            <mat-datepicker #pickerStartDate></mat-datepicker>
-            <mat-error *ngIf="tournamentForm.get('startDate').hasError('required')">
-                Start Date is required
-            </mat-error>
-            <mat-error *ngIf="tournamentForm.get('startDate').hasError('matDatepickerMin')">
-                Start Date should be greater than or equal to today's date.
-            </mat-error>
-        </mat-form-field>
-
-        <mat-form-field class="example-full-width">
-            <mat-label>End Date</mat-label>
-            <input matInput [matDatepicker]="pickerEndDate" formControlName="endDate" name="endDate" [min]="minDate"
-                required>
-            <mat-datepicker-toggle matIconSuffix [for]="pickerEndDate"></mat-datepicker-toggle>
-            <mat-datepicker #pickerEndDate></mat-datepicker>
-            <mat-error *ngIf="tournamentForm.get('endDate').hasError('required')">
-                End Date is required
-            </mat-error>
-            <mat-error *ngIf="tournamentForm.get('endDate').hasError('matDatepickerMin')">
-                End Date should be greater than Start Date.
-            </mat-error>
+            <mat-label>Tournament Dates</mat-label>
+            <ngx-multiple-dates [matDatepicker]="picker" placeholder="Selected Dates" [(ngModel)]="selectedDates" (dateChange)="onDateChange()" (remove)="onDateChange()"
+                [ngModelOptions]="{standalone: true}"></ngx-multiple-dates>
+            <mat-calendar #picker [minDate]="minDate"></mat-calendar>
         </mat-form-field>
 
         <mat-form-field class="example-full-width">
@@ -47,6 +29,14 @@
             <textarea matInput formControlName="description" placeholder="Enter Tournament Description"></textarea>
             <mat-error *ngIf="tournamentForm.get('description').hasError('required')">
                 Tournament Description is required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <mat-label>Venue</mat-label>
+            <input matInput formControlName="venue" placeholder="Enter Venue" />
+            <mat-error *ngIf="tournamentForm.get('venue').hasError('required')">
+                Venue is required
             </mat-error>
         </mat-form-field>
 
@@ -67,10 +57,12 @@
         <mat-slide-toggle formControlName="isActive" color="accent" class="example-full-width mb-4">Is
             Active</mat-slide-toggle>
         <div *ngIf="isEdit">
-            <button mat-raised-button color="primary" type="submit" (click)="addTournament()"><mat-icon>update</mat-icon>Update Tournament</button>
+            <button mat-raised-button color="primary" type="submit"
+                (click)="addTournament()"><mat-icon>update</mat-icon>Update Tournament</button>
         </div>
         <div *ngIf="!isEdit">
-            <button mat-raised-button color="primary" type="submit" (click)="addTournament()"><mat-icon>add_box</mat-icon>Add Tournament</button>
+            <button mat-raised-button color="primary" type="submit"
+                (click)="addTournament()"><mat-icon>add_box</mat-icon>Add Tournament</button>
         </div>
     </form>
 </div>

@@ -24,4 +24,8 @@ export class RegistrationService {
     RegisterPlayer(formData: any): Observable<ResponseModel> {
         return this.httpClient.post(this.ApiEndPoint + 'Registration/RegisterPlayer', formData).pipe(map((response => response as ResponseModel)));
     }
+
+    sendEmail(emailBody: any): Observable<ResponseModel> {
+        return this.httpClient.post(this.ApiEndPoint + 'Email/SendEmail', emailBody).pipe(map((response => response as ResponseModel)));
+    }
 }

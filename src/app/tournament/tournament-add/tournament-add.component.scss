@@ -42,3 +42,28 @@ mat-form-field {
 .plus-btn {
     margin: auto 5px;
 }
+
+.input-container,
+.button-container {
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 10px; /* Adjust margin as needed */
+}
+
+.flex-container {
+    display: flex;
+    align-items: baseline; /* Align items vertically */
+}
+
+.number-of-days {
+    flex: 1; /* Make input field occupy remaining space */
+    margin-right: 10px; /* Adjust margin as needed */
+}
+
+button {
+    margin-left: 10px; /* Adjust margin as needed */
+}
+
+::ng-deep .mat-calendar-body-cell.selected > .mat-calendar-body-cell-content {
+    background-color: orangered !important; /* Set your desired background color for selected dates */
+}

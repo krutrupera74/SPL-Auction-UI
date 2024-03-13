@@ -33,6 +33,14 @@
         </mat-form-field>
 
         <mat-form-field class="example-full-width">
+            <mat-label>Mobile Number</mat-label>
+            <input matInput formControlName="mobileNo" placeholder="Enter Mobile Number" />
+            <mat-error *ngIf="registerForm.get('mobileNo').hasError('required')">
+                Mobile Number is required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
             <mat-label>Employee Id</mat-label>
             <input matInput formControlName="employeeNo" placeholder="Enter Employee Id" />
             <mat-error *ngIf="registerForm.get('employeeNo').errors?.required">
@@ -96,8 +104,8 @@
         <mat-form-field class="example-full-width" *ngIf="isCricket">
             <mat-label>Preferred Batting Hand</mat-label>
             <mat-select formControlName="batsmanHand">
-                <mat-option value="left">Left</mat-option>
-                <mat-option value="right">Right</mat-option>
+                <mat-option value="Left">Left</mat-option>
+                <mat-option value="Right">Right</mat-option>
             </mat-select>
             <mat-error *ngIf="registerForm.get('batsmanHand').hasError('required')">
                 Preferred Batting Hand is required.
@@ -107,8 +115,8 @@
         <mat-form-field class="example-full-width" *ngIf="isCricket">
             <mat-label>Preferred Bowling Hand</mat-label>
             <mat-select formControlName="bowlerHand">
-                <mat-option value="left">Left</mat-option>
-                <mat-option value="right">Right</mat-option>
+                <mat-option value="Left">Left</mat-option>
+                <mat-option value="Right">Right</mat-option>
             </mat-select>
             <mat-error *ngIf="registerForm.get('bowlerHand').hasError('required')">
                 Preferred Bowling Hand is required.
@@ -118,15 +126,16 @@
         <mat-form-field class="example-full-width" *ngIf="isCricket">
             <mat-label>Bowling Style</mat-label>
             <mat-select formControlName="bowlingStyle">
-                <mat-option value="fast">Fast</mat-option>
-                <mat-option value="medium">Medium</mat-option>
-                <mat-option value="wristSpinner">Wrist Spinner (Leg Spin)</mat-option>
-                <mat-option value="fingerSpinner">Finger Spinner (Off Spin)</mat-option>
+                <mat-option value="Fast">Fast</mat-option>
+                <mat-option value="Medium">Medium</mat-option>
+                <mat-option value="WristSpinner">Wrist Spinner (Leg Spin)</mat-option>
+                <mat-option value="FingerSpinner">Finger Spinner (Off Spin)</mat-option>
             </mat-select>
             <mat-error *ngIf="registerForm.get('bowlingStyle').hasError('required')">
                 Bowling style is required.
             </mat-error>
         </mat-form-field>
+
 
         <mat-checkbox formControlName="interestedInCaptainOrOwner">Interested in being Captain / Owner</mat-checkbox>
 
@@ -135,6 +144,15 @@
                 <mat-radio-button value="captain">Captain</mat-radio-button>
                 <mat-radio-button value="owner">Owner</mat-radio-button>
             </mat-radio-group>
+        </div>
+
+        <div class="example-full-width">
+            <mat-label>Mark Your Availability</mat-label>
+            <div *ngFor="let date of dateArray" class="example-full-width">
+                <mat-checkbox [value]="date" (change)="toggleDate(date)">
+                    {{ date }}
+                </mat-checkbox>
+            </div>
         </div>
 
         <mat-form-field class="example-full-width mt-3">
