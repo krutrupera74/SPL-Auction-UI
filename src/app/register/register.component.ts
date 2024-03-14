@@ -6,7 +6,7 @@ import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } fro
 import { AddPlayerRequestModel } from './shared/models/player.model';
 import { SnackbarService } from '../shared/services/snackbar.service';
 import { Constants } from '../shared/constants/constant';
-import { jsPDF } from 'jspdf';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-register',
@@ -60,7 +60,7 @@ export class RegisterComponent implements OnInit {
       interestedInCaptainOrOwner: [false],
       captainOrOwner: ['captain'],
       comments: [''],
-      mobileNo: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]]
+      mobileNo: ['', [Validators.required, this.mobileNumberValidator]]
     });
     this.registerForm.get('interestedInCaptainOrOwner').valueChanges.subscribe(checked => {
       if (!checked) {
@@ -81,6 +81,13 @@ export class RegisterComponent implements OnInit {
     const isValid = emailRegex.test(control.value);
 
     return isValid ? null : { synoptekEmail: true };
+  }
+
+  mobileNumberValidator(control: FormControl): ValidationErrors | null {
+    const mobileRegex = /^\d{10}$/i;
+    const isValid = mobileRegex.test(control.value);
+
+    return isValid ? null : { mobileNumberError: true };
   }
 
   validateTournament(tournamentId) {
@@ -134,7 +141,7 @@ export class RegisterComponent implements OnInit {
       this.registrationService.RegisterPlayer(formData).subscribe(res => {
         if (res && res.success) {
           this.snackBarService.success(res.message);
-          this.sendEmail(this.tournamentData.name, this.registerForm.controls['name'].value, this.tournamentData.startDate, this.tournamentData.venue);
+          this.sendEmail(this.tournamentData.name, this.registerForm.controls['name'].value, formatDate(this.tournamentData.startDate, 'dd/MM/yyyy', 'en-US'), this.tournamentData.venue);
           this.router.navigate(['/register/thank-you']);
         }
       });
@@ -143,57 +150,36 @@ export class RegisterComponent implements OnInit {
 
   sendEmail(tournamentName, playerName, startDate, venue) {
     // Replace placeholders in the email template with actual values
+    const selectedDatesString = this.selectedDates.join(' | ');
     let emailContent = this.emailTemplate;
     emailContent = emailContent.replace(new RegExp(`{{playerName}}`, 'g'), playerName);
     emailContent = emailContent.replace(new RegExp(`{{tournamentName}}`, 'g'), tournamentName);
     emailContent = emailContent.replace(new RegExp(`{{tournamentDate}}`, 'g'), startDate);
     emailContent = emailContent.replace(new RegExp(`{{tournamentVenue}}`, 'g'), venue);
-
+    emailContent = emailContent.replace(new RegExp(`{{name}}`, 'g'), this.registerForm.controls['name'].value);
+    emailContent = emailContent.replace(new RegExp(`{{email}}`, 'g'), this.registerForm.controls['email'].value);
+    emailContent = emailContent.replace(new RegExp(`{{empNumber}}`, 'g'), this.registerForm.controls['employeeNo'].value);
+    emailContent = emailContent.replace(new RegExp(`{{gender}}`, 'g'), this.registerForm.controls['gender'].value ? 'male' : 'female');
+    emailContent = emailContent.replace(new RegExp(`{{batRat}}`, 'g'), this.registerForm.controls['battingRating'].value);
+    emailContent = emailContent.replace(new RegExp(`{{bowlRat}}`, 'g'), this.registerForm.controls['bowlingRating'].value);
+    emailContent = emailContent.replace(new RegExp(`{{wickRat}}`, 'g'), this.registerForm.controls['wicketKeepingRating'].value);
+    emailContent = emailContent.replace(new RegExp(`{{batHand}}`, 'g'), this.registerForm.controls['batsmanHand'].value);
+    emailContent = emailContent.replace(new RegExp(`{{bowlHand}}`, 'g'), this.registerForm.controls['bowlerHand'].value);
+    emailContent = emailContent.replace(new RegExp(`{{bowlStyle}}`, 'g'), this.registerForm.controls['bowlingStyle'].value);
+    emailContent = emailContent.replace(new RegExp(`{{interested}}`, 'g'), this.registerForm.controls['interestedInCaptainOrOwner'].value ? 'Yes' : 'No');
+    emailContent = emailContent.replace(new RegExp(`{{capOrOwn}}`, 'g'), this.registerForm.controls['captainOrOwner'].value);
+    emailContent = emailContent.replace(new RegExp(`{{comments}}`, 'g'), this.registerForm.controls['comments'].value);
+    emailContent = emailContent.replace(new RegExp(`{{playerDates}}`, 'g'), selectedDatesString);
+    emailContent = emailContent.replace(new RegExp(`{{mobileNumber}}`, 'g'), this.registerForm.controls['mobileNo'].value);
+    
     let emailSubject = this.emailSubject;
 
     emailSubject = emailSubject.replace(new RegExp(`{{tournamentName}}`, 'g'), tournamentName);
-
-    // Create form values object
-    const selectedDatesString = this.selectedDates.join(',');
-    const formValues = {
-      'Name': this.registerForm.controls['name'].value,
-      'Email': this.registerForm.controls['email'].value,
-      'Employee Number': this.registerForm.controls['employeeNo'].value,
-      'Gender': this.registerForm.controls['gender'].value ? 'male' : 'female',
-      'Batting Rating': this.registerForm.controls['battingRating'].value,
-      'Bowling Rating': this.registerForm.controls['bowlingRating'].value,
-      'Wicket Keeping Rating': this.registerForm.controls['wicketKeepingRating'].value,
-      'Batsman Hand': this.registerForm.controls['batsmanHand'].value,
-      'Bowler Hand': this.registerForm.controls['bowlerHand'].value,
-      'Bowling Style': this.registerForm.controls['bowlingStyle'].value,
-      'Interested In Captain or Owner': this.registerForm.controls['interestedInCaptainOrOwner'].value,
-      'Captain or Owner': this.registerForm.controls['captainOrOwner'].value,
-      'Comments': this.registerForm.controls['comments'].value,
-      'Player Availability': selectedDatesString,
-      'Mobile Number': this.registerForm.controls['mobileNo'].value
-    };
-
-    // Create PDF document
-    const pdf = new jsPDF();
-
-    // Set initial y-coordinate
-    let yPos = 10;
-
-    // Iterate over form values
-    for (const [label, value] of Object.entries(formValues)) {
-      pdf.text(`${label}: ${value}`, 10, yPos);
-      yPos += 10; // Increment y-coordinate for next line
-    }
-
-    // Save or send the PDF
-    const pdfFileName = `${this.registerForm.controls['name'].value} Response.pdf`;
-    const pdfBlob = pdf.output('blob');
 
     const formData = new FormData();
     formData.append('toEmail', this.registerForm.controls['email'].value);
     formData.append('subject', emailSubject);
     formData.append('body', emailContent);
-    formData.append('attachments', pdfBlob, pdfFileName);
 
     // Send the email content to the API
     this.registrationService.sendEmail(formData).subscribe(res => {

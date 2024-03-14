@@ -34,9 +34,13 @@
 
         <mat-form-field class="example-full-width">
             <mat-label>Mobile Number</mat-label>
-            <input matInput formControlName="mobileNo" placeholder="Enter Mobile Number" />
+            <input matInput formControlName="mobileNo" placeholder="Enter Mobile Number" maxlength="10"/>
             <mat-error *ngIf="registerForm.get('mobileNo').hasError('required')">
                 Mobile Number is required
+            </mat-error>
+            <mat-error
+                *ngIf="registerForm.get('mobileNo').hasError('mobileNumberError') && !registerForm.get('mobileNo').hasError('required')">
+                Mobile Number is not valid
             </mat-error>
         </mat-form-field>
 
