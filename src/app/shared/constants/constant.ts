@@ -17,8 +17,28 @@ export class Constants {
         <p>
         Please make sure to mark your calendar and be prepared to compete on the specified date.
         </p>
+        <p>Here's a summary of the information you provided during registration:</p>
+        <ul>
+            <li><strong>Name:</strong> {{name}}</li>
+            <li><strong>Email:</strong> {{email}}</li>
+            <li><strong>Employee Number:</strong> {{empNumber}}</li>
+            <li><strong>Gender:</strong> {{gender}}</li>
+            <li><strong>Batting Rating:</strong> {{batRat}}</li>
+            <li><strong>Bowling Rating:</strong> {{bowlRat}}</li>
+            <li><strong>Wicket Keeping Rating:</strong> {{wickRat}}</li>
+            <li><strong>Batsman Hand:</strong> {{batHand}}</li>
+            <li><strong>Bowler Hand:</strong> {{bowlHand}}</li>
+            <li><strong>Bowling Style:</strong> {{bowlStyle}}</li>
+            <li><strong>Interested In Captain or Owner:</strong> {{interested}}</li>
+            <li><strong>Captain or Owner:</strong> {{capOrOwn}}</li>
+            <li><strong>Comments:</strong> {{comments}}</li>
+            <li><strong>Player Availability:</strong> {{playerDates}}</li>
+            <li><strong>Mobile Number:</strong> {{mobileNumber}}</li>
+        </ul>
         <p>
         Once again, thank you for your participation, and we wish you the best of luck in the upcoming tournament. Let's make it a memorable and enjoyable experience for all!
         </p>
+        <p>Best regards,</p>
+        <p>The Organizing committee.</p>
     </div>`;
 }
