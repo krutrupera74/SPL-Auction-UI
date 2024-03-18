@@ -59,9 +59,14 @@
             <div *ngIf="isEdit && selectedFileUrl" class="mb-4">
                 <img [src]="selectedFileUrl" alt="Uploaded Image" style="max-width: 400px; max-height: 400px;">
             </div>
-            <button mat-raised-button color="primary" type="submit" (click)="addTeam()">
-                <mat-icon>add_box</mat-icon>Add Team
-            </button>
+            <div *ngIf="isEdit">
+                <button mat-raised-button color="primary" type="submit"
+                    (click)="addTeam()"><mat-icon>update</mat-icon>Update Team</button>
+            </div>
+            <div *ngIf="!isEdit">
+                <button mat-raised-button color="primary" type="submit"
+                    (click)="addTeam()"><mat-icon>add_box</mat-icon>Add Team</button>
+            </div>
         </div>
     </form>
 </div>

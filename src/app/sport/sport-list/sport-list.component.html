@@ -2,10 +2,18 @@
 
     <div class="container-header">
         <h2>Sport List</h2>
-        <button mat-raised-button color="primary" (click)="addSport()"><mat-icon>add_box</mat-icon>Add New Sport</button>
+        <button mat-raised-button color="primary" (click)="addSport()"><mat-icon>add_box</mat-icon>Add New
+            Sport</button>
+    </div>
+    
+    <div class="search-container">
+        <mat-form-field appearance="outline" class="search-input" color="accent">
+            <mat-label>Search</mat-label>
+            <input matInput type="text" [(ngModel)]="searchText" (input)="filterSports()" placeholder="Search...">
+        </mat-form-field>
     </div>
 
-    <table mat-table [dataSource]="sports" class="mat-elevation-z8">
+    <table mat-table [dataSource]="filteredSports" class="mat-elevation-z8">
         <ng-container matColumnDef="Name">
             <th mat-header-cell *matHeaderCellDef> Name </th>
             <td mat-cell *matCellDef="let element"> {{element.name}} </td>
@@ -16,16 +24,6 @@
             <td mat-cell *matCellDef="let element"> {{element.organization}} </td>
         </ng-container>
 
-        <!-- <ng-container matColumnDef="IsActive">
-            <th mat-header-cell *matHeaderCellDef> Is Active </th>
-            <td mat-cell *matCellDef="let element">
-                <mat-icon *ngIf="element.isActive; else inactiveIcon" style="color: green;">check</mat-icon>
-                <ng-template #inactiveIcon>
-                    <mat-icon style="color: red;">clear</mat-icon>
-                </ng-template>
-            </td>
-        </ng-container> -->
-
         <ng-container matColumnDef="Action">
             <th mat-header-cell *matHeaderCellDef> Action </th>
             <td mat-cell *matCellDef="let element">
@@ -34,7 +32,7 @@
                 </button>
                 <button mat-icon-button (click)="openDialog(element)">
                     <mat-icon style="color: black;">delete</mat-icon>
-                </button> 
+                </button>
             </td>
         </ng-container>
 

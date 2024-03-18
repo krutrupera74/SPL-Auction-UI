@@ -17,11 +17,13 @@
         <mat-error *ngIf="showDateError">
             You have to select at least one Date.
         </mat-error>
+
         <mat-form-field class="example-full-width">
-            <mat-label>Tournament Dates</mat-label>
-            <ngx-multiple-dates [matDatepicker]="picker" placeholder="Selected Dates" [(ngModel)]="selectedDates" (dateChange)="onDateChange()" (remove)="onDateChange()"
-                [ngModelOptions]="{standalone: true}"></ngx-multiple-dates>
-            <mat-calendar #picker [minDate]="minDate"></mat-calendar>
+            <ngx-multiple-dates [matDatepicker]="picker" placeholder="Excluded Dates" name="excludedDates"
+                [(ngModel)]="selectedDates" [ngModelOptions]="{standalone: true}" [min]="minDate">
+            </ngx-multiple-dates>
+            <mat-datepicker-toggle matPrefix [for]="picker" class="example-full-width"></mat-datepicker-toggle>
+            <mat-datepicker #picker class="example-full-width"></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field class="example-full-width">

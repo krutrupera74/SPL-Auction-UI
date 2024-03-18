@@ -12,7 +12,9 @@ import { ConfirmationDialog } from 'src/app/shared/confirmation-dialog/confirmat
 })
 export class TeamListComponent implements OnInit {
 
-  teams: TeamsList[];
+  teams: any[];
+  filteredTeams: any[] = []; // Array to hold filtered sports
+  searchText: string = ''; // Search text input field model
   displayedColumns: string[] = ['Logo', 'Name', 'Tournament', 'Action'];
 
   constructor(
@@ -31,8 +33,17 @@ export class TeamListComponent implements OnInit {
     this.teamsService.getAllTeams().subscribe(res => {
       if(res && res.success) {
         this.teams = res.data;
+        this.filteredTeams = this.teams.slice();
       }
     });
+  }
+
+  // Function to filter sports based on search text
+  filterTeam() {
+    this.filteredTeams = this.teams.filter(team =>
+      team.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
+      team.tournament.toLowerCase().includes(this.searchText.toLowerCase())
+    );
   }
 
   addTeam() {

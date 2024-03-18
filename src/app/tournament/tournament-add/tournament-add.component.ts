@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TournamentAddModel, TournamentUpdateModel } from '../shared/models/tournament.model';
@@ -30,6 +30,7 @@ export class TournamentAddComponent implements OnInit {
   selectedDates: Date[] = [];
   showDateError = false;
   formattedDates: string;
+  @ViewChild('picker') picker: ElementRef;
 
   constructor(
     private tournamentService: TournamentsService,
@@ -38,6 +39,8 @@ export class TournamentAddComponent implements OnInit {
     public dialogRef: MatDialogRef<TournamentAddComponent>,
     private datePipe: DatePipe,
     private dialog: MatDialog,
+    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
   }
@@ -52,14 +55,48 @@ export class TournamentAddComponent implements OnInit {
     });
     if (this.data?.mode === 'edit') {
       this.pageHeader = 'Edit Tournament';
+      let dateString = this.data?.item?.tournamentDates.split(',')[0];
+      let [day, month, year] = dateString.split('-');
+      this.minDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
       this.selectedTournamentId = this.data?.item.id;
       this.tournamentForm.patchValue(this.data?.item);
+
+      var dateStrings = this.data?.item?.tournamentDates.split(',');
+
+      // Initialize an empty array to store formatted dates
+      dateStrings.forEach(dateString => {
+        // Parse the date string
+        var parts = dateString.split('-');
+        var year = parseInt(parts[2]);
+        var month = parseInt(parts[1]) - 1; // months are 0-indexed in JavaScript
+        var day = parseInt(parts[0]);
+
+        // Create a Date object
+        var date = new Date(year, month, day);
+
+        // Push the formatted date into the array
+        this.selectedDates.push(date);
+      });
+
       this.isEdit = true;
     }
     else {
       this.isEdit = false;
     }
     this.getActiveSports();
+  }
+
+  getCellFromDate(date: Date): HTMLElement | null {
+    const calendar = this.picker['_matCalendarBody']?._el.nativeElement.querySelector('.mat-calendar-table');
+    const cells = calendar.querySelectorAll('.mat-calendar-body-cell');
+    for (let i = 0; i < cells.length; i++) {
+      const cell = cells[i] as HTMLElement;
+      const cellDate = new Date(cell.getAttribute('aria-label'));
+      if (cellDate.toDateString() === date.toDateString()) {
+        return cell;
+      }
+    }
+    return null;
   }
 
   closeDialog() {
