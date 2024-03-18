@@ -12,7 +12,9 @@ import { CommonService } from 'src/app/shared/services/common.service';
 })
 export class UsersListComponent {
 
-  users: UsersList[];
+  users: any[];
+  filteredUsers: any[] = []; // Array to hold filtered sports
+  searchText: string = ''; // Search text input field model
 
   displayedColumns: string[] = ['Username', 'OrganizationName', 'Role', 'Is Active', 'Action'];
 
@@ -33,8 +35,18 @@ export class UsersListComponent {
           element.username = this.commonService.decrypt(element.username);
         });
         this.users = res.data;
+        this.filteredUsers = this.users.slice();
       }
     });
+  }
+
+  // Function to filter sports based on search text
+  filterUsers() {
+    this.filteredUsers = this.users.filter(user =>
+      user.organizationName.toLowerCase().includes(this.searchText.toLowerCase()) || 
+      user.username.toLowerCase().includes(this.searchText.toLowerCase()) || 
+      user.role.toLowerCase().includes(this.searchText.toLowerCase())
+    );
   }
 
   addUser() {

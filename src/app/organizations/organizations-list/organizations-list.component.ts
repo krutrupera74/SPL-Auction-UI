@@ -11,7 +11,9 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class OrganizationsListComponent implements OnInit {
 
-  organizations: OrganizationsList[];
+  organizations: any[];
+  filteredOrganizations: any[] = []; // Array to hold filtered sports
+  searchText: string = ''; // Search text input field model
   addOrganizationDialog = false;
   displayedColumns: string[] = ['Name', 'IsActive', 'Action'];
   @ViewChild(OrganizationsAddComponent) organizationsAddComponent: OrganizationsAddComponent;
@@ -29,8 +31,16 @@ export class OrganizationsListComponent implements OnInit {
     this.organiationService.getOrganizations().subscribe(res => {
       if (res && res.success) {
         this.organizations = res.data;
+        this.filteredOrganizations = this.organizations.slice();
       }
     });
+  }
+
+  // Function to filter sports based on search text
+  filterOrganizations() {
+    this.filteredOrganizations = this.organizations.filter(organization =>
+      organization.organizationName.toLowerCase().includes(this.searchText.toLowerCase())
+    );
   }
 
   editOrganization(data) {
