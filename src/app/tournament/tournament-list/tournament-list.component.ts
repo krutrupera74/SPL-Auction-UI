@@ -13,7 +13,9 @@ import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 })
 export class TournamentListComponent implements OnInit {
 
-  tournaments: TournamentsList[];
+  tournaments: any[];
+  filteredTournaments: any[] = []; // Array to hold filtered sports
+  searchText: string = ''; // Search text input field model
   addTournamentDialog = false;
   displayedColumns: string[] = ['Name', 'StartDate', 'EndDate', 'Description', 'Sport', 'Action'];
   @ViewChild(TournamentAddComponent) tournamentAddComponent: TournamentAddComponent;
@@ -33,8 +35,18 @@ export class TournamentListComponent implements OnInit {
     this.tournamentService.getAllTournaments().subscribe(res => {
       if (res && res.success) {
         this.tournaments = res.data;
+        this.filteredTournaments = this.tournaments.slice();
       }
     });
+  }
+
+  // Function to filter sports based on search text
+  filterTournament() {
+    this.filteredTournaments = this.tournaments.filter(tournament =>
+      tournament.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
+      tournament.description.toLowerCase().includes(this.searchText.toLowerCase()) ||
+      tournament.sport.toLowerCase().includes(this.searchText.toLowerCase())
+    );
   }
 
   editTournament(data) {

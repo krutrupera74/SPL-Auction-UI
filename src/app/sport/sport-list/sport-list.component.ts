@@ -12,7 +12,9 @@ import { SnackbarService } from 'src/app/shared/services/snackbar.service';
   styleUrls: ['./sport-list.component.scss']
 })
 export class SportListComponent implements OnInit {
-  sports: SportsList[];
+  sports: any[];
+  filteredSports: any[] = []; // Array to hold filtered sports
+  searchText: string = ''; // Search text input field model
   addSportDialog = false;
   displayedColumns: string[] = ['Name', 'Organization', 'Action'];
   @ViewChild(SportAddComponent) sportAddComponent: SportAddComponent;
@@ -32,8 +34,17 @@ export class SportListComponent implements OnInit {
     this.sportsService.getAllSports().subscribe(res => {
       if (res && res.success) {
         this.sports = res.data;
+        this.filteredSports = this.sports.slice();
       }
     });
+  }
+
+  // Function to filter sports based on search text
+  filterSports() {
+    this.filteredSports = this.sports.filter(sport =>
+      sport.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
+      sport.organization.toLowerCase().includes(this.searchText.toLowerCase())
+    );
   }
 
   editSport(data) {
